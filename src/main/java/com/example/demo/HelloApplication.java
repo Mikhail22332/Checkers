@@ -1,9 +1,8 @@
 package com.example.demo;
 
-import com.Client.Board;
+import com.Client.MainView;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -11,13 +10,7 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        Board board = new Board();
-        board.boardCreation();
-        board.addPiece();
-        GridPane gridPane = board.getGridPane();
-        stage.setScene(new Scene(gridPane, 400, 400));
-        stage.setTitle("Checkers");
-        stage.show();
+        new MainView(stage);
     }
 
     public static void main(String[] args) {
