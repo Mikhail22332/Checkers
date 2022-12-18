@@ -10,10 +10,10 @@ import java.util.ArrayList;
 public class Piece extends StackPane {
     private PieceType type;
     private SquareOfField squareOfField = new SquareOfField();
+    double radius = squareOfField.getSquareSize()*2/10;
 
     public Piece(PieceType type, int xCord, int yCord, GridPane gridpane){
         this.type = type;
-        double radius = squareOfField.getSquareSize()*2/10;
         System.out.println(radius);
         relocate(radius*xCord,radius*yCord);
         Circle piece = new Circle(radius);
