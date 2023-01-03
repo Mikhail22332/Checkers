@@ -7,8 +7,8 @@ public class Capture extends Move {
     private static boolean isCapture;
     private Position positionCapture;
 
-    public Capture(Position start, Position destination, boolean jump, boolean captureFalse, boolean mustCapture) {
-        super(start, destination, jump, captureFalse, mustCapture);
+    public Capture(Position start, Position destination, boolean mustCapture) {
+        super(start, destination, mustCapture);
     }
 
     public boolean isCapture(){

@@ -14,7 +14,7 @@ public abstract class AbstractPiece implements Piece {
     }
 
     @Override
-    public abstract Set<Move> generMoves(Position position);
+    public abstract Set<Move> generateMoves(Position position);
 
     @Override
     public Color getColor() {
@@ -25,4 +25,5 @@ public abstract class AbstractPiece implements Piece {
     public PieceType getType() {
         return type;
     }
+
 }

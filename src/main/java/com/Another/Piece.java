@@ -4,8 +4,9 @@ import java.util.Set;
 
 public interface Piece {
 
-    Set<Move> generMoves(Position position);
+    Set<Move> generateMoves(Position position);
     Color getColor();
 
     PieceType getType();
+
 }
