@@ -23,24 +23,37 @@ public class Pawn extends AbstractPiece {
         for (int i = -1 ; i <= 1; i++) {
             int endX = startX + i;
             int endY = startY + i;
+            boolean bounds = outOfBounds(endX, endY);
 
             //change if for promotion and capture
-            if (endX > 0 && endY > 0 && endX < 7 && endY < 7) {
-
-
+            if (bounds) {
                 Move move = null;
-                //promotion needed
-                //capture needed
 
-                if (endX-startX == 1 && endY-startY == 1 || endX - startX == -1 && endY-startY == 1 ) {
+                //capture needed!!
+
+                //promotion
+                if((endX == 0 && endY < 7 && endY > 0) || (endX == 7  && endY < 7 && endY > 0)){
+                    move = new Promotion(position, new Position(endX, endY), PieceType.Quene);
+
+                }
+                //move
+                if (Math.abs(endX-startX) == 1 && Math.abs(endY-startY) == 1 ) {
                     Position end = new Position(endX, endY);
                     move = new Move(position, end, false);
                 }
+
                 moves.add(move);
             }
         }
         return moves;
     }
 
-
+    private boolean outOfBounds(int x, int y){
+        if (x>=0 && x < 8 && y >= 0 && y < 8){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

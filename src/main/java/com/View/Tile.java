@@ -4,14 +4,17 @@ package com.View;
 import com.Another.Position;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 
 public class Tile extends Rectangle {
     private Position position;
     private StackPane paneNode = new StackPane();
     private Color color;
+    private String symbol;
 
     public Tile(Position pos){
         this.position = pos;
@@ -37,4 +40,15 @@ public class Tile extends Rectangle {
         return paneNode;
     }
 
+    public void setSymbol(String symbol) {
+        paneNode.getChildren().clear();
+        this.symbol = symbol;
+        Label label = new Label(symbol);
+        label.setFont(new Font(50));
+        paneNode.getChildren().addAll(new Rectangle(50, 50 , Color.TRANSPARENT), label);
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
 }

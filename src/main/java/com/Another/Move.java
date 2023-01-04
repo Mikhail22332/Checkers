@@ -37,4 +37,5 @@ public class Move {
     public void setPieceType(PieceType type){
         this.type = type;
     }
+
 }
