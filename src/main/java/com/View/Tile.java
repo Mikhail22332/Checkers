@@ -51,4 +51,9 @@ public class Tile extends Rectangle {
     public String getSymbol() {
         return symbol;
     }
+    public void clear(){
+        Background back = new Background(new BackgroundFill(color, new CornerRadii(0), new Insets(0)));
+        paneNode.setBackground(back);
+    }
+
 }

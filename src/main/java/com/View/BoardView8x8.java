@@ -20,22 +20,28 @@ public class BoardView8x8 {
         this.controller = controller;
         gameBoard = new Tile[size][size];
         gridPane = new GridPane();
-
+        reset(controller);
     }
-
+    public void reset(Game8x8Controller newController){
+        controller = newController;
+        createPieces();
+        controller.startGame();
+    }
     private void createPieces(){
         gridPane.getChildren().clear();
         Map<Piece, Position> pieces = controller.getAllActivePositions();
 
         for(int r = 0; r < size; r++){
             for(int c = 0; c < size; c++){
-                Tile cell = new Tile(new Position(r, c));
-                gridPane.add(cell, r, c);
 
-                GridPane.setHgrow(cell.getPaneNode(), Priority.ALWAYS);
-                GridPane.setVgrow(cell.getPaneNode(), Priority.ALWAYS);
+                Tile tile = new Tile(new Position(r, c));
+                gridPane.add(tile.getPaneNode(), tile.getPosition().getX(), tile.getPosition().getY());
 
-                gameBoard[r][c] = cell;
+                GridPane.setHgrow(tile.getPaneNode(), Priority.ALWAYS);
+                GridPane.setVgrow(tile.getPaneNode(), Priority.ALWAYS);
+
+                gameBoard[r][c] = tile;
+                tile.clear();
             }
         }
         //adding pieces
@@ -48,4 +54,9 @@ public class BoardView8x8 {
     private Tile getTileAt(Position pos){
         return gameBoard[pos.getX()][pos.getY()];
     }
+
+    public Pane getView(){
+        return gridPane;
+    }
+
 }

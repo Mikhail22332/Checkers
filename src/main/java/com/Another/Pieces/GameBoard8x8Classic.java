@@ -1,6 +1,7 @@
 package com.Another.Pieces;
 
 import com.Another.*;
+import javafx.geometry.Side;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,17 +19,35 @@ public class GameBoard8x8Classic implements Board {
         blackLocation = new HashMap<>();
         board = new Piece[size][size];
 
-        //placing pieces
-        for (int column = 0; column < size; column++) {
-            for (int  row= 0;  row< size; row++) {
-                if (column < 3 && (row + column) %2 == 1){
-                    placePiece(new Pawn(Color.White), new Position(row, column));
-                }if (column >= 5 && (row + column) % 2 != 0) {
-                    placePiece(new Pawn(Color.Black), new Position(row, column));
+        for (Color sideColor :Color.values()) {
+
+            int row1 = -1;
+            int row2 = -1;
+            int row3 = -1;
+
+            if(sideColor.equals(Color.Black)){
+                row1 = 0;
+                row2 = 1;
+                row3 = 3;
+            }
+            else{
+                row1 = 5;
+                row2 = 6;
+                row3 = 7;
+            }
+            //placing pieces
+            for (int row = 0; row < size; row++) {
+                for (int column = 0; column < size; column++) {
+
+                    if (column < 3 && (row + column) % 2 == 1) {
+                        placePiece(new Pawn(Color.Black), new Position(row, column));
+                    }
+                    if (column >= 5 && (row + column) % 2 != 0) {
+                        placePiece(new Pawn(Color.White), new Position(row, column));
+                    }
                 }
             }
         }
-
     }
 
 

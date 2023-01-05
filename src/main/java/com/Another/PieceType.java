@@ -1,8 +1,8 @@
 package com.Another;
 
 public enum PieceType implements SymbolPiece{
-    Pawn("○", "●"),
-    Quene("⚆", "⚈");
+    Pawn("⛀", "⛂"),
+    Quene("⛁", "⛃");
     private String white, black;
 
     PieceType(String white, String black) {
