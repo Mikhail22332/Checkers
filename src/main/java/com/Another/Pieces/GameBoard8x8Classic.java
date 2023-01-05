@@ -39,11 +39,11 @@ public class GameBoard8x8Classic implements Board {
             for (int row = 0; row < size; row++) {
                 for (int column = 0; column < size; column++) {
 
-                    if (column < 3 && (row + column) % 2 == 1) {
-                        placePiece(new Pawn(Color.Black), new Position(row, column));
+                    if (row < 3 && (row + column) % 2 == 0) {
+                        placePiece(new Pawn(Color.Black), new Position(column, row));
                     }
-                    if (column >= 5 && (row + column) % 2 != 0) {
-                        placePiece(new Pawn(Color.White), new Position(row, column));
+                    if (row >= 5 && (row + column) % 2 == 0) {
+                        placePiece(new Pawn(Color.White), new Position(column, row));
                     }
                 }
             }

@@ -34,7 +34,6 @@ public class Pawn extends AbstractPiece {
                 //promotion
                 if((endX == 0 && endY < 7 && endY > 0) || (endX == 7  && endY < 7 && endY > 0)){
                     move = new Promotion(position, new Position(endX, endY), PieceType.Quene);
-
                 }
                 //move
                 if (Math.abs(endX-startX) == 1 && Math.abs(endY-startY) == 1 ) {

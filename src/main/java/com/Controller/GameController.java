@@ -27,5 +27,6 @@ public interface GameController {
 
     Color getCurrentPlayer();
 
+    String getSymbolForPieceAt(Position pos);
 
 }

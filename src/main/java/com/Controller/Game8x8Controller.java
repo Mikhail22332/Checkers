@@ -111,6 +111,15 @@ public class Game8x8Controller implements GameController{
         return currentPlayer;
     }
 
+    @Override
+    public String getSymbolForPieceAt(Position pos) {
+        Piece piece = board.getPieceAt(pos);
+        if(piece == null){
+            return "";
+        }
+        return piece.getType().getSymbol(piece.getColor());
+    }
+
     private Move possibilitiesForMove(Move move){
         Move myMove = null;
         for (Move testedMove: currentMoves.get(selectedPiece)){
