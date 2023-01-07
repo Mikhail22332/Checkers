@@ -40,12 +40,12 @@ class Pawn extends javafx.scene.shape.Circle {
 
         // Check if the destination square is in the same column as the pawn
         else if(Math.abs(col - this.col) == 2) {
-            Pawn temp = CheckersBoard1.getSquare((row + this.row) / 2, (col + this.col) / 2).getPawn();
+            Pawn temp = ClientApplication.getSquare((row + this.row) / 2, (col + this.col) / 2).getPawn();
             if(temp == null || temp.color == color) {
                 return false;
             }
             else {
-                CheckersBoard1.getSquare((row + this.row) / 2, (col + this.col) / 2).setPawn(null);
+                ClientApplication.getSquare((row + this.row) / 2, (col + this.col) / 2).setPawn(null);
             }
         }
 

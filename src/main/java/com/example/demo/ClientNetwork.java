@@ -5,33 +5,35 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class clientNetwork {
-    private Socket socket;
-    private Scanner input;
-    private PrintWriter output;
+public class ClientNetwork {
+    private static Socket socket;
+    public static Scanner input;
+    private static PrintWriter output;
 
-    private boolean isYourMove = false;
+    private static boolean isYourMove = false;
 
-    public clientNetwork() {}
+    public ClientNetwork() {}
 
-    public boolean IsYourMove() {return isYourMove;}
+    public static boolean IsYourMove() {return isYourMove;}
 
     public void connectToServer(String ip) throws IOException {
         socket = new Socket(ip, 58901);
         input = new Scanner(socket.getInputStream());
         output = new PrintWriter(socket.getOutputStream(), true);
+        System.out.println("Connected");
     }
-    public void disconnectFromServer() throws IOException {
+    public static void disconnectFromServer() throws IOException {
+        System.out.println("Disconnected");
         output.println("QUIT");
         socket.close();
     }
 
-    public void waitResponse() throws Exception {
+    public static void getResponse() throws Exception {
         try {
-            var response = input.nextLine();
-            System.out.println(response);
-            while (input.hasNextLine()) {
-                response = input.nextLine();
+            if(input == null)
+                return;
+            if (input.hasNextLine()) {
+                var response = input.nextLine();
                 if (response.startsWith("VALID_MOVE")) {
                     System.out.println("Valid move, please wait");
                     isYourMove = false;
@@ -43,41 +45,35 @@ public class clientNetwork {
                     }
                     System.out.println("Opponent moved, your turn");
                     isYourMove = true;
-                    break;
                 } else if (response.startsWith("MESSAGE")) {
                     String s = response.substring(8);
                     System.out.println(s);
                     if(s.startsWith("YOUR MOVE"))
                     {
                         isYourMove = true;
-                        break;
                     }
                 } else if (response.startsWith("VICTORY")) {
                     System.out.println("Winner Winner");
                     //ToDo some gui to show that info to player
-                    break;
                 } else if (response.startsWith("DEFEAT")) {
                     System.out.println("Sorry you lost");
                     //ToDo some gui to show that info to player
-                    break;
                 } else if (response.startsWith("TIE")) {
                     System.out.println("Tie");
                     //ToDo some gui to show that info to player
-                    break;
                 } else if (response.startsWith("OTHER_PLAYER_LEFT")) {
                     System.out.println("Other player left");
                     //ToDo some gui to show that info to player
-                    break;
                 }
-                System.out.println("inWhile");
+                System.out.println("TryToGetResponse");
             }
-            //output.println("QUIT");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void sendMove(String move) throws Exception {
+    public static void sendMove(String move) throws Exception {
+        System.out.println(move);
         output.println(move);
-        this.waitResponse();
+        System.out.println("Sending move");
     }
 }
