@@ -7,7 +7,7 @@ import java.awt.geom.Ellipse2D;
 public class Piece {
     private static final Color PIECE_COLOR = Color.RED;
     private static final Color KING_COLOR = Color.BLUE;
-
+    private Color
     private boolean isKing;
     private int row;
     private int col;

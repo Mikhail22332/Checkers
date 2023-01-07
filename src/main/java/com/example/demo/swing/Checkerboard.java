@@ -20,6 +20,9 @@ public class Checkerboard extends JPanel {
     private static final Color LIGHT_COLOR = Color.WHITE;
     private static final Color DARK_COLOR = Color.BLACK;
 
+    private int selectedRow = -1;
+    private int selectedCol = -1;
+
     private List<Piece> pieces;
 
     public Checkerboard() {
@@ -60,13 +63,22 @@ public class Checkerboard extends JPanel {
             public void mousePressed(MouseEvent e) {
                 int col = e.getX() / tileSize;
                 int row = e.getY() / tileSize;
-                if (data.getColor(row, col) == Color.RED) {
-                    if (movePiece(row, col, row + 1, col + 1)) {
-                        data.setColor(row, col, null);
-                        data.setColor(row + 1, col + 1, Color.RED);
+                if (selectedRow == -1) {
+                    // No piece is currently selected, so select the piece at this position
+                    if (data.getColor(row, col) == Color.RED) {
+                        selectedRow = row;
+                        selectedCol = col;
                     }
+                } else {
+                    // A piece is currently selected, so try to move it to this position
+                    if (movePiece(selectedRow, selectedCol, row, col)) {
+                        data.setColor(selectedRow, selectedCol, null);
+                        data.setColor(row, col, Color.RED);
+                    }
+                    selectedRow = -1;
+                    selectedCol = -1;
+                    repaint();
                 }
-                repaint();
             }
         });
     }
@@ -98,6 +110,7 @@ public class Checkerboard extends JPanel {
         return new Dimension(NUM_COLS * tileSize, NUM_ROWS * tileSize);
     }
     public boolean movePiece(int fromRow, int fromCol, int toRow, int toCol) {
+        // ToDo rework with sending to server with waiting response
         Piece piece = getPiece(fromRow, fromCol);
         if (piece == null) {
             return false;
@@ -129,9 +142,10 @@ public class Checkerboard extends JPanel {
         }
         if (piece.getColor() == Color.RED) {
             return toRow > fromRow;
-        } else {
+        } else if(piece.getColor() == Color.BLUE) {
             return toRow < fromRow;
         }
+        else return false;
     }
 
     private Piece getPiece(int row, int col) {

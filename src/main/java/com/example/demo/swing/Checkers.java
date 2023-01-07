@@ -19,7 +19,7 @@ public class Checkers {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Checkers");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        final Checkerboard checkerboard = new Checkerboard();
+        final Checkerboard checkerboard = new Checkerboard(new CheckersData());
         frame.add(checkerboard);
 
         frame.setResizable(true);
