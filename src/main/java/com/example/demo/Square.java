@@ -25,7 +25,10 @@ class Square extends javafx.scene.control.Control {
 
         // Add a mouse listener to the square to handle clicks
         setOnMouseClicked(event -> {
-            if(!CheckersBoard1.myNetwork.IsYourMove()) { return; }
+            if(!ClientApplication.myNetwork.IsYourMove()) {
+                System.out.println("Not your move");
+                return;
+            }
             // If the square is empty, do nothing
             if (pawn == null && selectedPawn == null) {
                 System.out.println("No pawn");
@@ -42,18 +45,11 @@ class Square extends javafx.scene.control.Control {
                             selectedPawn.getRow() + "," +
                             selectedPawn.getCol() + "," +
                             row + "," + col;
-                    System.out.println("Move is realised");
-                    CheckersBoard1.getSquare(selectedPawn.getRow(), selectedPawn.getCol()).setPawn(null);
-                    selectedPawn.setRow(row);
-                    selectedPawn.setCol(col);
-                    CheckersBoard1.getSquare(selectedPawn.getRow(), selectedPawn.getCol()).setPawn(null);
-                    setPawn(selectedPawn);
-                    selectedPawn.setSelected(false);
-                    selectedPawn = null;
+                    makeMove();
                     //ToDo add 1. Sent move to server 2. Lock Pawns & Queens from moves until we recieve ansver from server
                     // task 1
                     try {
-                        CheckersBoard1.myNetwork.sendMove(myMove);
+                        ClientApplication.myNetwork.sendMove(myMove);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -69,6 +65,16 @@ class Square extends javafx.scene.control.Control {
                 selectedPawn = pawn;
             }
         });
+    }
+    private void makeMove(){
+        System.out.println("Move is realised");
+        ClientApplication.getSquare(selectedPawn.getRow(), selectedPawn.getCol()).setPawn(null);
+        selectedPawn.setRow(row);
+        selectedPawn.setCol(col);
+        ClientApplication.getSquare(selectedPawn.getRow(), selectedPawn.getCol()).setPawn(null);
+        setPawn(selectedPawn);
+        selectedPawn.setSelected(false);
+        selectedPawn = null;
     }
 
     public void setPawn(Pawn pawn) {

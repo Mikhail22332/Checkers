@@ -6,14 +6,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class CheckersBoard1 extends Application {
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class ClientApplication extends Application {
     private static Square[][] squares;
 
-    public static clientNetwork myNetwork = new clientNetwork();
+    public static ClientNetwork myNetwork = new ClientNetwork();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        myNetwork.connectToServer("localhost");
         GridPane root = new GridPane();
         // ToDo editable size for other versions of checkers
 
@@ -38,9 +42,29 @@ public class CheckersBoard1 extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
-        myNetwork.waitResponse();
-    }
 
+        // Connect to the server in a separate thread
+
+        new Thread(() -> {
+            try {
+                // Connect to the server
+                myNetwork.connectToServer("localhost");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
+            try {
+                myNetwork.getResponse();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }, 0, 100, TimeUnit.MILLISECONDS);
+    }
 
 
     public static void main(String[] args)  {

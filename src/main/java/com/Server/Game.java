@@ -63,9 +63,9 @@ public class Game {
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
             if(mark == Color.White)
-                output.println("WELCOME WHITE");
+                output.println("MESSAGE WELCOME WHITE");
             else
-                output.println("WELCOME BLACK");
+                output.println("MESSAGE WELCOME BLACK");
             if (mark == Color.White) {
                 currentPlayer = this;
                 output.println("MESSAGE Waiting for opponent to connect");
