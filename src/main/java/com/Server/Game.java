@@ -1,7 +1,7 @@
 package com.Server;
 
 import com.Data.*;
-import com.Data.Standart.CheckerStandart;
+import com.Data.Standart.ValidatorStandart;
 import com.Data.Standart.FactoryBoardStandart;
 
 import java.io.IOException;
@@ -12,13 +12,13 @@ import java.util.Scanner;
 public class Game {
     Board board;
     AbstractFactory factoryBoard;
-    AbstractChecker checker;
+    AbstractValidator checker;
     Player currentPlayer;
     public Game(GameType type, int size){
         if(type == GameType.Standart){
             factoryBoard = new FactoryBoardStandart();
             board = factoryBoard.CreateBoard(size);
-            checker = new CheckerStandart();
+            checker = new ValidatorStandart();
         }
     }
 
@@ -89,10 +89,10 @@ public class Game {
             String s = "";
             for(int i = 0; i < board.GetSize(); i++){
                 for(int j = 0; j < board.GetSize(); j++){
-                    if(board.GetField(i,j) == PieceType.Blank){
+                    if(board.GetField(i,j).getPieceType() == PieceType.Blank){
                         s = s + "0";
                     }
-                    else if(board.GetField(i,j) == PieceType.WhitePawn){
+                    else if(board.GetField(i,j).getPieceType() == PieceType.Pawn){
                         s = s + "1";
                     }
                     else {

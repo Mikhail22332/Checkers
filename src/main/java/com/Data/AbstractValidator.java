@@ -1,6 +1,6 @@
 package com.Data;
 
-public abstract class AbstractChecker {
+public abstract class AbstractValidator {
     public boolean isValidMove(Board board, Move move){
         return false;
     }
@@ -9,8 +9,9 @@ public abstract class AbstractChecker {
         boolean flag = true;
         for(int i = 0; i < board.GetSize(); i++){
             for(int j = 0; j < board.GetSize(); j++){
-                PieceType currentField = board.GetField(i,j);
-                if(currentField == PieceType.WhitePawn || currentField == PieceType.WhiteQueen){
+                Piece pieceAtField = board.GetField(i,j);
+
+                if(pieceAtField.getPieceColor() == Color.Black){
                     flag = false;
                     break;
                 }
@@ -24,8 +25,9 @@ public abstract class AbstractChecker {
         boolean flag = true;
         for(int i = 0; i < board.GetSize(); i++){
             for(int j = 0; j < board.GetSize(); j++){
-                PieceType currentField = board.GetField(i,j);
-                if(currentField == PieceType.BlackPawn || currentField == PieceType.BlackQueen){
+                Piece pieceAtField = board.GetField(i,j);
+
+                if(pieceAtField.getPieceColor() == Color.White){
                     flag = false;
                     break;
                 }
@@ -35,10 +37,10 @@ public abstract class AbstractChecker {
         }
         return flag;
     }
-    public boolean isWinner(Board board, Color color){
-        if(color == Color.Black)
+    public boolean isWinner(Board board, Color playerColor){
+        if(playerColor == Color.Black)
             return isBlackWin(board);
-        else if(color == Color.White)
+        else if(playerColor == Color.White)
             return isWhiteWin(board);
         else
             return false;

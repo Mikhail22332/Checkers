@@ -1,8 +1,6 @@
 package com.Data.Standart;
 
-import com.Data.AbstractFactory;
-import com.Data.Board;
-import com.Data.PieceType;
+import com.Data.*;
 
 public class FactoryBoardStandart extends AbstractFactory {
     public FactoryBoardStandart(){
@@ -22,11 +20,12 @@ public class FactoryBoardStandart extends AbstractFactory {
     private void FillBoard8x8(Board board){
         for(int i = 0; i < board.GetSize(); i++) {
             for (int j = 0; j < board.GetSize(); j++) {
+
                 if (i < 3 && (i + j) % 2 == 0) {
-                    board.SetField(PieceType.BlackPawn, i, j);
+                    board.SetField(new Piece(PieceType.Pawn, Color.Black), i, j);
                 }
                 if (i > 4 && (i + j) % 2 == 0) {
-                    board.SetField(PieceType.WhitePawn, i, j);
+                    board.SetField(new Piece(PieceType.Pawn, Color.White), i, j);
                 }
             }
         }

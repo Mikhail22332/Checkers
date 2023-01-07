@@ -6,10 +6,6 @@ public class Move {
     private int x2 = 0;
     private int y2 = 0;
     public Move(){}
-    public int GetX1(){return x1;}
-    public int GetY1(){return y1;}
-    public int GetX2(){return x2;}
-    public int GetY2(){return y2;}
     public void SetMove(String s[]){
         this.x1 = Integer.parseInt(s[0]);
         this.y1 = Integer.parseInt(s[1]);
@@ -22,6 +18,10 @@ public class Move {
         move.SetMove(a);
         return move;
     }
+    public int GetX1(){return x1;}
+    public int GetY1(){return y1;}
+    public int GetX2(){return x2;}
+    public int GetY2(){return y2;}
     public static String MoveToString(Move move){
         String s = "";
         s += move.GetX1() + ",";

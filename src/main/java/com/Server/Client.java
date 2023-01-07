@@ -1,9 +1,5 @@
 package com.Server;
 
-import com.Data.AbstractChecker;
-import com.Data.AbstractFactory;
-import com.Data.Board;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

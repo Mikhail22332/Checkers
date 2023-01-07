@@ -1,9 +1,6 @@
 package com.Data;
 
 public enum PieceType {
-    BlackPawn,
-    WhitePawn,
-    BlackQueen,
-    WhiteQueen,
-    Blank
+    Pawn, Quene,
+    Blank;
 }
