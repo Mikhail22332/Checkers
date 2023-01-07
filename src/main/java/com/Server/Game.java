@@ -72,7 +72,7 @@ public class Game {
             } else {
                 opponent = currentPlayer;
                 opponent.opponent = this;
-                opponent.output.println("MESSAGE Your move");
+                opponent.output.println("MESSAGE YOUR MOVE");
             }
         }
         private void processCommands(){
@@ -85,7 +85,7 @@ public class Game {
                 }
             }
         }
-        public String ToString(){
+        public String BoardToString(){
             String s = "";
             for(int i = 0; i < board.GetSize(); i++){
                 for(int j = 0; j < board.GetSize(); j++){
@@ -108,8 +108,9 @@ public class Game {
             try {
                 System.out.println(move);
                 move(Move.StringToMove(move));
+                //ToDo Check move
                 output.println("VALID_MOVE");
-                opponent.output.println("OPPONENT_MOVED " + "ss" + ToString());
+                opponent.output.println("OPPONENT_MOVED " + "ss" + BoardToString());
                 if (checker.isWinner(board, mark)) {
                     output.println("VICTORY");
                     opponent.output.println("DEFEAT");
