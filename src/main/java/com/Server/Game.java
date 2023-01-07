@@ -23,9 +23,16 @@ public class Game {
     }
 
     public synchronized void move(Move move){
-        if(!checker.isValidMove(board, move))
+        int typeOfMove = checker.isValidMove(board, move);
+        if(typeOfMove == 1){
+            checker.makeMove(board, move);
+        } else if (typeOfMove == 2) {
+            checker.makeCaptureMove(board, move);
+        } else if (typeOfMove == 3) {
+            checker.makePromotion(board, move);
+        }else {
             throw new IllegalStateException("NOT_VALID_MOVE");
-        checker.MakeMove(board, move);
+        }
         currentPlayer = currentPlayer.opponent;
     }
 
@@ -87,12 +94,12 @@ public class Game {
         }
         public String BoardToString(){
             String s = "";
-            for(int i = 0; i < board.GetSize(); i++){
-                for(int j = 0; j < board.GetSize(); j++){
-                    if(board.GetField(i,j).getPieceType() == PieceType.Blank){
+            for(int i = 0; i < board.getSize(); i++){
+                for(int j = 0; j < board.getSize(); j++){
+                    if(board.getField(i,j).getPieceType() == PieceType.Blank){
                         s = s + "0";
                     }
-                    else if(board.GetField(i,j).getPieceType() == PieceType.Pawn){
+                    else if(board.getField(i,j).getPieceType() == PieceType.Pawn){
                         s = s + "1";
                     }
                     else {

@@ -15,15 +15,16 @@ public class Board {
             field.add(row);
         }
     }
-    public int GetSize() {
+    public int getSize() {
         return size;
     }
-    public Piece GetField(int i, int j){
+    public Piece getField(int i, int j){
         return field.get(i).get(j);
     }
-    public void SetField(Piece piece, int i, int j){
+    public void setField(Piece piece, int i, int j){
         field.get(i).set(j, piece);
     }
+
     // To Test Client-Server Console version
 
 }

@@ -18,14 +18,14 @@ public class FactoryBoardStandart extends AbstractFactory {
         return board;
     }
     private void FillBoard8x8(Board board){
-        for(int i = 0; i < board.GetSize(); i++) {
-            for (int j = 0; j < board.GetSize(); j++) {
+        for(int i = 0; i < board.getSize(); i++) {
+            for (int j = 0; j < board.getSize(); j++) {
 
                 if (i < 3 && (i + j) % 2 == 0) {
-                    board.SetField(new Piece(PieceType.Pawn, Color.Black), i, j);
+                    board.setField(new Piece(PieceType.Pawn, Color.Black), i, j);
                 }
                 if (i > 4 && (i + j) % 2 == 0) {
-                    board.SetField(new Piece(PieceType.Pawn, Color.White), i, j);
+                    board.setField(new Piece(PieceType.Pawn, Color.White), i, j);
                 }
             }
         }
