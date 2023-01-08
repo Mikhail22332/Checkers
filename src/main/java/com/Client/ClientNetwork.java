@@ -1,4 +1,6 @@
-package com.example.demo;
+package com.Client;
+
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,40 +30,53 @@ public class ClientNetwork {
         socket.close();
     }
 
-    public static void getResponse() throws Exception {
+    public void getResponse() throws Exception {
         try {
             if(input == null)
                 return;
             if (input.hasNextLine()) {
                 var response = input.nextLine();
                 if (response.startsWith("VALID_MOVE")) {
-                    System.out.println("Valid move, please wait");
-                    isYourMove = false;
-                } else if (response.startsWith("OPPONENT_MOVED")) {
-                    String[] s = response.split("ss");
-                    System.out.println(s.length);
-                    for(String a : s){
-                        System.out.println(a);
+                    response = response.substring(11);
+                    if(response.startsWith("YOUR_TURN")) {
+                        response = response.substring(10);
+                        updateBoard(response);
+                        System.out.println("Your turn one more");
+                        isYourMove = true;
                     }
+                    if(response.startsWith("WAIT")) {
+                        response = response.substring(5);
+                        updateBoard(response);
+                        System.out.println("Valid move, please wait");
+                        isYourMove = false;
+                    }
+                }
+                else if (response.startsWith("OPPONENT_MOVED")) {
+                    response = response.substring(15);
+                    updateBoard(response);
                     System.out.println("Opponent moved, your turn");
                     isYourMove = true;
-                } else if (response.startsWith("MESSAGE")) {
+                }
+                else if (response.startsWith("MESSAGE")) {
                     String s = response.substring(8);
                     System.out.println(s);
                     if(s.startsWith("YOUR MOVE"))
                     {
                         isYourMove = true;
                     }
-                } else if (response.startsWith("VICTORY")) {
+                }
+                else if (response.startsWith("VICTORY")) {
                     System.out.println("Winner Winner");
                     //ToDo some gui to show that info to player
-                } else if (response.startsWith("DEFEAT")) {
+                }
+                else if (response.startsWith("DEFEAT")) {
                     System.out.println("Sorry you lost");
                     //ToDo some gui to show that info to player
                 } else if (response.startsWith("TIE")) {
                     System.out.println("Tie");
                     //ToDo some gui to show that info to player
-                } else if (response.startsWith("OTHER_PLAYER_LEFT")) {
+                }
+                else if (response.startsWith("OTHER_PLAYER_LEFT")) {
                     System.out.println("Other player left");
                     //ToDo some gui to show that info to player
                 }
@@ -70,6 +85,10 @@ public class ClientNetwork {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void updateBoard(String board) {
+        String[] s = board.split("newline");
+        Platform.runLater(() -> ClientApplication.updateSquares(s));
     }
     public static void sendMove(String move) throws Exception {
         System.out.println(move);

@@ -12,28 +12,14 @@ import java.util.Scanner;
 public class Game {
     Board board;
     AbstractFactory factoryBoard;
-    AbstractValidator checker;
+    AbstractValidator validator;
     Player currentPlayer;
     public Game(GameType type, int size){
         if(type == GameType.Standart){
             factoryBoard = new FactoryBoardStandart();
             board = factoryBoard.CreateBoard(size);
-            checker = new ValidatorStandart();
+            validator = new ValidatorStandart();
         }
-    }
-
-    public synchronized void move(Move move){
-        int typeOfMove = checker.isValidMove(board, move);
-        if(typeOfMove == 1){
-            checker.makeMove(board, move);
-        } else if (typeOfMove == 2) {
-            checker.makeCaptureMove(board, move);
-        } else if (typeOfMove == 3) {
-            checker.makePromotion(board, move);
-        }else {
-            throw new IllegalStateException("NOT_VALID_MOVE");
-        }
-        currentPlayer = currentPlayer.opponent;
     }
 
     class Player implements Runnable{
@@ -47,7 +33,24 @@ public class Game {
             this.socket = socket;
             this.mark = mark;
         }
-
+        //0 - impossible move, 1 - simple move, 2 - capture
+        public boolean moveValidation(Move move){
+            int typeOfMove = validator.isValidMove(board, move);
+            System.out.println(typeOfMove);
+            if (typeOfMove == 2) {
+                validator.makeCaptureMove(board, move);
+                output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
+                return false;
+            }
+            currentPlayer = currentPlayer.opponent;
+            if(typeOfMove == 1){
+                validator.makeMove(board, move);
+                output.println("VALID_MOVE WAIT " + board.boardToString());
+                return true;
+            }
+            output.println("NOT_VALID_MOVE");
+            return false;
+        }
         @Override
         public void run() {
             try {
@@ -65,7 +68,6 @@ public class Game {
                 }
             }
         }
-
         private void setup() throws IOException {
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
@@ -92,33 +94,12 @@ public class Game {
                 }
             }
         }
-        public String BoardToString(){
-            String s = "";
-            for(int i = 0; i < board.getSize(); i++){
-                for(int j = 0; j < board.getSize(); j++){
-                    if(board.getField(i,j).getPieceType() == PieceType.Blank){
-                        s = s + "0";
-                    }
-                    else if(board.getField(i,j).getPieceType() == PieceType.Pawn){
-                        s = s + "1";
-                    }
-                    else {
-                        s = s + "2";
-                    }
-                    s = s + ",";
-                }
-                s = s + "ss";
-            }
-            return s;
-        }
         private void processMoveCommand(String move) {
             try {
                 System.out.println(move);
-                move(Move.StringToMove(move));
-                //ToDo Check move
-                output.println("VALID_MOVE");
-                opponent.output.println("OPPONENT_MOVED " + "ss" + BoardToString());
-                if (checker.isWinner(board, mark)) {
+                if(!moveValidation(Move.StringToMove(move))) {return;}
+                opponent.output.println("OPPONENT_MOVED " + board.boardToString());
+                if (validator.isWinner(board, mark)) {
                     output.println("VICTORY");
                     opponent.output.println("DEFEAT");
                 }

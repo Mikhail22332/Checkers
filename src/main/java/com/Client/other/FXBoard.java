@@ -1,4 +1,4 @@
-package com.Client;
+package com.Client.other;
 
 import javafx.scene.Group;
 import javafx.scene.layout.*;

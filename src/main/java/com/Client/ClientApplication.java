@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.Client;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -12,12 +12,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ClientApplication extends Application {
-    private static Square[][] squares;
+    public static Square[][] squares;
 
     public static ClientNetwork myNetwork = new ClientNetwork();
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         GridPane root = new GridPane();
         // ToDo editable size for other versions of checkers
 
@@ -32,9 +32,9 @@ public class ClientApplication extends Application {
 
                 // Generate pawns at the default positions
                 if (row < 3 && (row + col) % 2 == 1) {
-                    square.setPawn(new Pawn(row, col, 1, Color.RED));
+                    square.setPawn(new Pawn(row, col, 1, Color.BLACK));
                 } else if (row > 4 && (row + col) % 2 == 1) {
-                    square.setPawn(new Pawn(row, col, -1, Color.GREEN));
+                    square.setPawn(new Pawn(row, col, -1, Color.WHITE));
                 }
             }
         }
@@ -65,15 +65,40 @@ public class ClientApplication extends Application {
             }
         }, 0, 100, TimeUnit.MILLISECONDS);
     }
-
-
-    public static void main(String[] args)  {
-        launch(args);
-        //temp.play();
+    // Method to update board
+    public static void updateSquares(String[] s) {
+        System.out.println("Try to update field");
+        for(int i = 0; i < 8; i++){
+            String[] fields = s[i].split(",");
+            for(int j = 0; j < 8; j++) {
+                int temp = Integer.parseInt(fields[j]);
+                // Set null
+                if(temp == 0) {
+                    getSquare(i,j).setPawn(null);
+                    continue;
+                }
+                Pawn current = new Pawn(i, j);
+                if(temp % 2 == 0) {
+                    current.makeQueen();
+                }
+                if(temp < 3) {
+                    current.setDirection(-1);
+                    current.setColor(Color.WHITE);
+                }
+                else if(temp < 5) {
+                    current.setDirection(1);
+                    current.setColor(Color.BLACK);
+                }
+                getSquare(i,j).setPawn(current);
+            }
+        }
     }
-
     public static Square getSquare(int row, int col) {
         return squares[row][col];
     }
+    public static void main(String[] args)  {
+        launch(args);
+    }
+
 }
 

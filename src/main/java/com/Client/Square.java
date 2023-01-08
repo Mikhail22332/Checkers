@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.Client;
 
 class Square extends javafx.scene.control.Control {
 
@@ -18,13 +18,15 @@ class Square extends javafx.scene.control.Control {
 
         // Set the color of the square
         if ((row + col) % 2 == 0) {
-            setStyle("-fx-background-color: white;");
+            setStyle("-fx-background-color: #eeeed2;" +
+                    "-fx-border-color:#424242;");
         } else {
-            setStyle("-fx-background-color: black;");
+            setStyle("-fx-background-color: #769656;" +
+                    "-fx-border-color:#424242;");
         }
-
         // Add a mouse listener to the square to handle clicks
         setOnMouseClicked(event -> {
+            // Check is our move now
             if(!ClientApplication.myNetwork.IsYourMove()) {
                 System.out.println("Not your move");
                 return;
@@ -37,8 +39,7 @@ class Square extends javafx.scene.control.Control {
 
             // If a pawn is already selected, try to move it to this square
             if (selectedPawn != null) {
-                //ToDo task 2 from 53 line
-                System.out.println("Try to move pawn");
+                //System.out.println("Try to move pawn");
                 // If the pawn can be moved to this square, move it and unselect it
                 if (selectedPawn.canMoveTo(row, col)) {
                     String myMove = "MOVE " +
@@ -46,8 +47,6 @@ class Square extends javafx.scene.control.Control {
                             selectedPawn.getCol() + "," +
                             row + "," + col;
                     makeMove();
-                    //ToDo add 1. Sent move to server 2. Lock Pawns & Queens from moves until we recieve ansver from server
-                    // task 1
                     try {
                         ClientApplication.myNetwork.sendMove(myMove);
                     } catch (Exception e) {
@@ -59,7 +58,7 @@ class Square extends javafx.scene.control.Control {
                     selectedPawn = null;
                 }
             } else if(pawn != null) {
-                System.out.println("Pawn was selected");
+                //System.out.println("Pawn was selected");
                 // If no pawn is selected, select this pawn
                 pawn.setSelected(true);
                 selectedPawn = pawn;
@@ -67,7 +66,7 @@ class Square extends javafx.scene.control.Control {
         });
     }
     private void makeMove(){
-        System.out.println("Move is realised");
+        //System.out.println("Move is realised");
         ClientApplication.getSquare(selectedPawn.getRow(), selectedPawn.getCol()).setPawn(null);
         selectedPawn.setRow(row);
         selectedPawn.setCol(col);

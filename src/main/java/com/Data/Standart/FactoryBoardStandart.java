@@ -21,10 +21,10 @@ public class FactoryBoardStandart extends AbstractFactory {
         for(int i = 0; i < board.getSize(); i++) {
             for (int j = 0; j < board.getSize(); j++) {
 
-                if (i < 3 && (i + j) % 2 == 0) {
+                if (i < 3 && (i + j) % 2 == 1) {
                     board.setField(new Piece(PieceType.Pawn, Color.Black), i, j);
                 }
-                if (i > 4 && (i + j) % 2 == 0) {
+                if (i > 4 && (i + j) % 2 == 1) {
                     board.setField(new Piece(PieceType.Pawn, Color.White), i, j);
                 }
             }

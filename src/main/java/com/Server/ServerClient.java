@@ -6,7 +6,7 @@ import com.Data.GameType;
 import java.net.ServerSocket;
 import java.util.concurrent.Executors;
 
-public class Server {
+public class ServerClient {
     public static void main(String[] args) throws Exception {
         try (var listener = new ServerSocket(58901)) {
             System.out.println("Tic Tac Toe Server is Running...");

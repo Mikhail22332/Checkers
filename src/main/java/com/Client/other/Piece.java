@@ -1,11 +1,9 @@
-package com.Client;
+package com.Client.other;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
-import java.util.ArrayList;
 
 public class Piece extends StackPane {
     private PieceType type;

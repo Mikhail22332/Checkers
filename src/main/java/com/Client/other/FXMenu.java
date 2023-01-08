@@ -1,4 +1,4 @@
-package com.Client;
+package com.Client.other;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;

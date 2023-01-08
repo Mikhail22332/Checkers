@@ -1,4 +1,4 @@
-package com.Client;
+package com.Client.other;
 
 public class MoveManager {
     /** TODO
