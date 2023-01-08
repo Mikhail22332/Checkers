@@ -45,29 +45,10 @@ class Pawn extends javafx.scene.shape.Circle {
     }
 
     public boolean canMoveTo(int row, int col) {
-        // Check is right diagonal was chosen to move
+        // Check is same diagonal was chosen to move
         if(Math.abs(col - this.col) != Math.abs(row - this.row) || Math.abs(row - this.row) == 0 || Math.abs(col - this.col) == 0) {
             return false;
         }
-        // Check if the destination square is in the correct direction relative to the pawn
-        if ((row - this.row) / Math.abs(row - this.row) != direction) {
-            return false;
-        }
-        if (Math.abs(col - this.col) != 1 && Math.abs(col - this.col) != 2) {
-            return false;
-        }
-
-        // Check if the destination square is in the same column as the pawn
-        else if(Math.abs(col - this.col) == 2) {
-            Pawn temp = ClientApplication.getSquare((row + this.row) / 2, (col + this.col) / 2).getPawn();
-            if(temp == null || temp.color == color) {
-                return false;
-            }
-            else {
-                ClientApplication.getSquare((row + this.row) / 2, (col + this.col) / 2).setPawn(null);
-            }
-        }
-
         return true;
     }
 

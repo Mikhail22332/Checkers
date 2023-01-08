@@ -51,6 +51,12 @@ public class ClientNetwork {
                         isYourMove = false;
                     }
                 }
+                else if (response.startsWith("NOT_VALID_MOVE")){
+                    response = response.substring(15);
+                    updateBoard(response);
+                    System.out.println("That is not valid move, please make new move");
+                    isYourMove = true;
+                }
                 else if (response.startsWith("OPPONENT_MOVED")) {
                     response = response.substring(15);
                     updateBoard(response);

@@ -35,8 +35,8 @@ public class Game {
         }
         //0 - impossible move, 1 - simple move, 2 - capture
         public boolean moveValidation(Move move){
-            int typeOfMove = validator.isValidMove(board, move);
-            System.out.println(typeOfMove);
+            int typeOfMove = validator.isValidMove(board, move, mark);
+            //System.out.println(typeOfMove);
             if (typeOfMove == 2) {
                 validator.makeCaptureMove(board, move);
                 output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
@@ -48,7 +48,8 @@ public class Game {
                 output.println("VALID_MOVE WAIT " + board.boardToString());
                 return true;
             }
-            output.println("NOT_VALID_MOVE");
+            board.printBoard();
+            output.println("NOT_VALID_MOVE " + board.boardToString());
             return false;
         }
         @Override
