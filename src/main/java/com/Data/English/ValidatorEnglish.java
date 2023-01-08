@@ -72,13 +72,6 @@ public class ValidatorEnglish extends AbstractValidator {
         this.playerMark = playerMark;
     }
 
-    private boolean checkPromotion(Piece current, int size, int x2) {
-        if(current.getPieceType() != PieceType.Pawn) {return false;}
-        if(x2 == 0 && current.getPieceColor() == Color.White){return true;}
-        if(x2 == size - 1 && current.getPieceColor() == Color.Black){return true;}
-        return false;
-    }
-
     private boolean outOfBounds(int x, int y){
         if (!(x>=0 && x < 8 && y >= 0 && y < 8)){
             return true;

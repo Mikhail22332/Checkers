@@ -72,12 +72,6 @@ public class ValidatorStandart extends AbstractValidator {
         this.playerMark = playerMark;
     }
 
-    private boolean checkPromotion(Piece current, int size, int x2) {
-        if(current.getPieceType() != PieceType.Pawn) {return false;}
-        if(x2 == 0 && current.getPieceColor() == Color.White){return true;}
-        return x2 == size - 1 && current.getPieceColor() == Color.Black;
-    }
-
     private boolean outOfBounds(Board board, int x, int y){
         return !(x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize());
     }

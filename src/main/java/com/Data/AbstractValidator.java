@@ -49,4 +49,10 @@ public abstract class AbstractValidator {
     }
 
     public abstract void setPlayerMark(Color playerMark);
+
+    public boolean checkPromotion(Piece current, int size, int x2) {
+        if(current.getPieceType() != PieceType.Pawn) {return false;}
+        if(x2 == 0 && current.getPieceColor() == Color.White){return true;}
+        return x2 == size - 1 && current.getPieceColor() == Color.Black;
+    }
 }
