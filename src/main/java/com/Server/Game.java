@@ -30,7 +30,7 @@ public class Game {
             board = factoryBoard.сreateBoard(size);
             validator = new ValidatorEnglish();
         }
-        if(type == GameType.SomeType2) {
+        if(type == GameType.Polish) {
             factoryBoard = new FactoryBoardStandart();
             board = factoryBoard.сreateBoard(size);
             validator = new ValidatorStandart();
@@ -55,12 +55,17 @@ public class Game {
             System.out.println(typeOfMove);
             // Move with capture
             if (typeOfMove == 2) {
+                Piece startPiece = board.getField(move.getX1(),move.getY1());
                 validator.makeMove(board, move);
+                Piece endPiece = board.getField(move.getX2(), move.getY2());
                 lastMyMove = move;
                 // Check is there any more move with capture
-                if(validator.isAnyCaptureForThatField(board, lastMyMove.getX2(), lastMyMove.getY2())) {
+                if(validator.checkForNextMove(lastMyMove.getX2(), lastMyMove.getY2(), board)) {
                     output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
                     return false;
+                }
+                else  {
+                    board.getField(lastMyMove.getX2(), lastMyMove.getY2()).setPieceType(PieceType.Queen);
                 }
                 output.println("VALID_MOVE WAIT " + board.boardToString());
                 return true;

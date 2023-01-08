@@ -4,6 +4,7 @@ public abstract class AbstractValidator {
     public boolean isAnyCaptureForThatField(Board board, int startX, int startY) {return false;}
     //0 -impossible move, 1 - simple move, 2- capture
     public abstract int isValidMove(Board board, Move move, Move lastMove, Color playerMark);
+    public boolean checkForNextMove(int startX, int startY, Board board) {return isAnyCaptureForThatField(board, startX, startY);}
 
     public void makeMove(Board board, Move move){}
     private boolean isWhiteWin(Board board){
