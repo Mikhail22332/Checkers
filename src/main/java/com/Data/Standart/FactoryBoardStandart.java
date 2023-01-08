@@ -7,14 +7,14 @@ public class FactoryBoardStandart extends AbstractFactory {
         super();
     }
 
-    public Board сreateBoard(int size){
+    @Override
+    public Board сreateBoard(int size) {
         if(size == 8)
             return createBoard8x8();
         if(size == 10)
             return createBoard10x10();
         return null;
     }
-
 
     private Board createBoard8x8(){
         Board board = new Board(8);

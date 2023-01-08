@@ -22,17 +22,17 @@ public class Game {
         currentType = type;
         if(type == GameType.Russian){
             factoryBoard = new FactoryBoardStandart();
-            board = factoryBoard.createBoard(size);
+            board = factoryBoard.сreateBoard(size);
             validator = new ValidatorStandart();
         }
         if(type == GameType.English) {
             factoryBoard = new FactoryBoardEnglish();
-            board = factoryBoard.createBoard(size);
+            board = factoryBoard.сreateBoard(size);
             validator = new ValidatorEnglish();
         }
         if(type == GameType.SomeType2) {
             factoryBoard = new FactoryBoardStandart();
-            board = factoryBoard.createBoard(size);
+            board = factoryBoard.сreateBoard(size);
             validator = new ValidatorStandart();
         }
     }
@@ -101,25 +101,18 @@ public class Game {
                 output.println("MESSAGE WELCOME WHITE " + board.getSize());
             else
                 output.println("MESSAGE WELCOME BLACK " + board.getSize());
-            if(currentType == GameType.English){
+            if (mark == Color.White) {
+                currentPlayer = this;
+                output.println("MESSAGE Waiting for opponent to connect");
+            } else {
+                opponent = currentPlayer;
+                opponent.opponent = this;
                 // First move to Black
-                if (mark == Color.Black) {
-                    currentPlayer = this;
-                    output.println("MESSAGE Waiting for opponent to connect");
-                } else {
-                    opponent = currentPlayer;
-                    opponent.opponent = this;
-                    opponent.output.println("MESSAGE YOUR MOVE");
+                if(currentType == GameType.English) {
+                    currentPlayer.output.println("MESSAGE YOUR MOVE");
                 }
-            }
-            else {
                 // First move to White
-                if (mark == Color.White) {
-                    currentPlayer = this;
-                    output.println("MESSAGE Waiting for opponent to connect");
-                } else {
-                    opponent = currentPlayer;
-                    opponent.opponent = this;
+                else {
                     opponent.output.println("MESSAGE YOUR MOVE");
                 }
             }

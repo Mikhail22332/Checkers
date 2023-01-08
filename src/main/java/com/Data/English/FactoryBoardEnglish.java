@@ -3,21 +3,19 @@ package com.Data.English;
 import com.Data.*;
 
 public class FactoryBoardEnglish extends AbstractFactory{
-    public FactoryBoardEnglish(){
-        super();
-    }
-
+    public FactoryBoardEnglish(){ super(); }
+    @Override
     public Board сreateBoard(int size){
         if(size == 8)
-            return createBoard8X8();
+            return CreateBoard8x8();
         return null;
     }
-    public Board createBoard8X8(){
+    public Board CreateBoard8x8(){
         Board board = new Board(8);
-        fillBoard8X8(board);
+        FillBoard8x8(board);
         return board;
     }
-    private void fillBoard8X8(Board board){
+    private void FillBoard8x8(Board board){
         for(int i = 0; i < board.getSize(); i++) {
             for (int j = 0; j < board.getSize(); j++) {
 
