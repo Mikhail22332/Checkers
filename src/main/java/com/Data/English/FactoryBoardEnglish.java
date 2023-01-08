@@ -3,11 +3,9 @@ package com.Data.English;
 import com.Data.*;
 
 public class FactoryBoardEnglish extends AbstractFactory{
-    public FactoryBoardEnglish(){
-        super();
-    }
+    public FactoryBoardEnglish(){ super(); }
     @Override
-    public Board CreateBoard(int size){
+    public Board сreateBoard(int size){
         if(size == 8)
             return CreateBoard8x8();
         return null;

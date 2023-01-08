@@ -30,14 +30,20 @@ public class ServerClient {
         try (var listener = new ServerSocket(58901)) {
             System.out.println("Checkers Server is Running...");
             var pool = Executors.newFixedThreadPool(200);
+            Game gameExample = new Game();
             while (true) {
-                Game gameExample = new Game();
-                if(type == 1)
-                     gameExample = new Game(GameType.Russian, 8);
-                if(type == 2)
+                if(type == 1) {
+                    System.out.println("Russian checkers was chosen");
+                    gameExample = new Game(GameType.Russian, 8);
+                }
+                if(type == 2) {
+                    System.out.println("English checkers was chosen");
                     gameExample = new Game(GameType.English, 8);
-                if(type == 3)
+                }
+                if(type == 3) {
+                    System.out.println("International checkers was chosen");
                     gameExample = new Game(GameType.SomeType2, 10);
+                }
                 pool.execute(gameExample.new Player(listener.accept(), Color.White));
                 pool.execute(gameExample.new Player(listener.accept(), Color.Black));
             }
