@@ -22,17 +22,19 @@ public class Game {
         currentType = type;
         if(type == GameType.Russian){
             factoryBoard = new FactoryBoardStandart();
+            board = factoryBoard.createBoard(size);
             validator = new ValidatorStandart();
         }
         if(type == GameType.English) {
             factoryBoard = new FactoryBoardEnglish();
+            board = factoryBoard.createBoard(size);
             validator = new ValidatorEnglish();
         }
         if(type == GameType.SomeType2) {
             factoryBoard = new FactoryBoardStandart();
+            board = factoryBoard.createBoard(size);
             validator = new ValidatorStandart();
         }
-        board = factoryBoard.createBoard(size);
     }
 
     class Player implements Runnable{
