@@ -29,28 +29,25 @@ public class ValidatorStandart extends AbstractValidator {
 
                 Piece pieceAtEnd = board.getField(endX, endY);
 
-                if(mustCapture(startX, startY, endX, endY, board)){
-                    //set скорее всего не нужен, написал для пешки
-                    move.setX2(startX + (endX-startX));
-                    move.setY2(startY + (endY-startY));
+                if(mustCapture(startX, startY, endX, endY, board))
                     return 2;
-                }
-                if(!mustCapture(startX, startY, endX, endY, board)) {
+
+                else if(!mustCapture(startX, startY, endX, endY, board)) {
                     int deltaX = endX-startX;
                     int deltaY = endY-startY;
                     if(Math.abs(deltaX) == Math.abs(deltaY) && pieceAtEnd.getPieceType().equals(PieceType.Blank)){
                         if(promotionPossible(startX,startY,endX,endY,board))
                             return 3;
-                        else{
+
+                        else
                             return 1;
-                        }
+
                     }
+                else
+                    return 0;
+
                 }
-
-
             }
-
-
         }
 
 
@@ -75,8 +72,6 @@ public class ValidatorStandart extends AbstractValidator {
         int x2 = move.getX2();
         int y2 = move.getY2();
         if (board.getField(x1, y1).getPieceType() == PieceType.Pawn){
-            board.setField(board.getField(x1,y1),x2,y2);
-            board.setField(new Piece(PieceType.Blank, Color.NoColor),x1,y1);
             int dx = x2 - x1;
             int dy = y2 - y1;
             int midX = 0;
@@ -97,6 +92,8 @@ public class ValidatorStandart extends AbstractValidator {
                 midX = x1 + dx/2;
                 midY = x2 + dy/2;
             }
+            board.setField(board.getField(x1,y1),x2,y2);
+            board.setField(new Piece(PieceType.Blank, Color.NoColor),x1,y1);
             board.setField(new Piece(PieceType.Blank, Color.NoColor), midX, midY);
         } else{
             //TODO queen
