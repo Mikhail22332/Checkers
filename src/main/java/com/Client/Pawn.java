@@ -6,42 +6,29 @@ class Pawn extends javafx.scene.shape.Circle {
 
     private int row;
     private int col;
-    private int direction;
     private boolean selected;
     private boolean isQueen;
     private Color color;
 
-    public Pawn(int row, int col, int direction, Color color) {
+    public Pawn(int row, int col, Color color) {
         this.row = row;
         this.col = col;
-        this.direction = direction;
         this.color = color;
         this.isQueen = false;
 
-        // Set the size and color of the pawn
-        setRadius(20);
+        // set color of the pawn
         setFill(color);
         setStroke(Color.BLACK);
-
-        // Place the pawn at the center of the square
-        setCenterX(25);
-        setCenterY(25);
     }
     public Pawn(int row, int col) {
         this.row = row;
         this.col = col;
-        this.direction = 0;
         this.color = null;
         this.isQueen = false;
 
-        // Set the size and color of the pawn
-        setRadius(20);
+        // Set color of the pawn
         setFill(color);
         setStroke(Color.BLACK);
-
-        // Place the pawn at the center of the square
-        setCenterX(25);
-        setCenterY(25);
     }
 
     public boolean canMoveTo(int row, int col) {
@@ -76,10 +63,6 @@ class Pawn extends javafx.scene.shape.Circle {
 
     public int getCol() { return col; }
 
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
     public void makeQueen() {
         this.isQueen = true;
         setStroke(Color.RED);
@@ -87,4 +70,10 @@ class Pawn extends javafx.scene.shape.Circle {
     }
 
     public void setColor(Color color) { this.color = color; setFill(color); }
+
+    public void setSize(double size){
+        setRadius(size / 2 - 5);
+        setCenterX(size / 2);
+        setCenterY(size / 2);
+    }
 }

@@ -37,7 +37,7 @@ public class ServerClient {
                 if(type == 2)
                     gameExample = new Game(GameType.English, 8);
                 if(type == 3)
-                    gameExample = new Game(GameType.SomeType2, 8);
+                    gameExample = new Game(GameType.SomeType2, 10);
                 pool.execute(gameExample.new Player(listener.accept(), Color.White));
                 pool.execute(gameExample.new Player(listener.accept(), Color.Black));
             }

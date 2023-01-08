@@ -20,18 +20,17 @@ public class Game {
     public Game(GameType type, int size){
         if(type == GameType.Russian){
             factoryBoard = new FactoryBoardStandart();
-            board = factoryBoard.CreateBoard(size);
             validator = new ValidatorStandart();
         }
         if(type == GameType.English) {
             factoryBoard = new FactoryBoardEnglish();
-            board = factoryBoard.CreateBoard(size);
             validator = new ValidatorEnglish();
         }
         if(type == GameType.SomeType2) {
-
+            factoryBoard = new FactoryBoardStandart();
+            validator = new ValidatorStandart();
         }
-
+        board = factoryBoard.createBoard(size);
     }
 
     class Player implements Runnable{
@@ -95,9 +94,9 @@ public class Game {
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
             if(mark == Color.White)
-                output.println("MESSAGE WELCOME WHITE");
+                output.println("MESSAGE WELCOME WHITE " + board.getSize());
             else
-                output.println("MESSAGE WELCOME BLACK");
+                output.println("MESSAGE WELCOME BLACK " + board.getSize());
             if (mark == Color.White) {
                 currentPlayer = this;
                 output.println("MESSAGE Waiting for opponent to connect");

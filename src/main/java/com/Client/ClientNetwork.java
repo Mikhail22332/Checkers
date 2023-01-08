@@ -64,11 +64,17 @@ public class ClientNetwork {
                     isYourMove = true;
                 }
                 else if (response.startsWith("MESSAGE")) {
-                    String s = response.substring(8);
-                    System.out.println(s);
-                    if(s.startsWith("YOUR MOVE"))
+                    response = response.substring(8);
+                    System.out.println(response);
+                    if(response.startsWith("YOUR MOVE"))
                     {
                         isYourMove = true;
+                    }
+                    if(response.startsWith("WELCOME"))
+                    {
+                        response = response.substring(14);
+                        int size = Integer.parseInt(response);
+                        Platform.runLater(() -> ClientApplication.setSize(size));
                     }
                 }
                 else if (response.startsWith("VICTORY")) {

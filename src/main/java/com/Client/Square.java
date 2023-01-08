@@ -13,8 +13,9 @@ class Square extends javafx.scene.control.Control {
 
         // Set the size of the square
         // ToDo Rework to resizable
-        setMinSize(50, 50);
-        setMaxSize(50, 50);
+        setMinSize(25, 25);
+        setPrefSize(50, 50);
+        setMaxSize(100, 100);
 
         // Set the color of the square
         if ((row + col) % 2 == 0) {
@@ -64,6 +65,11 @@ class Square extends javafx.scene.control.Control {
                 selectedPawn = pawn;
             }
         });
+    }
+    public void setSize(double size) {
+        setPrefSize(size, size);
+        if(getPawn() != null)
+            getPawn().setSize(Math.max(size, 25));
     }
     private void makeMove(){
         //System.out.println("Move is realised");
