@@ -38,9 +38,11 @@ public class Game {
         public boolean moveValidation(Move move){
             int typeOfMove = validator.isValidMove(board, move, lastMyMove, mark);
             System.out.println(typeOfMove);
+            // Move with capture
             if (typeOfMove == 2) {
                 validator.makeMove(board, move);
                 lastMyMove = move;
+                // Check is there any more move with capture
                 if(validator.isAnyCaptureForThatField(board, move.getX2(), move.getY2())) {
                     output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
                     return false;
@@ -48,12 +50,14 @@ public class Game {
                 output.println("VALID_MOVE WAIT " + board.boardToString());
                 return true;
             }
+            // Move without capture
             if(typeOfMove == 1){
                 validator.makeMove(board, move);
                 lastMyMove = move;
                 output.println("VALID_MOVE WAIT " + board.boardToString());
                 return true;
             }
+            // Not valid move
             board.printBoard();
             output.println("NOT_VALID_MOVE " + board.boardToString());
             return false;
