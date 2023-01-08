@@ -11,7 +11,7 @@ public class ValidatorEnglish extends AbstractValidator {
     public int isValidMove(Board board, Move move, Move lastMove, Color playerMark){
 
         this.playerMark = playerMark;
-        //TODO some logic to check validation of moves
+
         int startX = move.getX1();
         int startY = move.getY1();
         int endX = move.getX2();

@@ -17,7 +17,7 @@ public class ServerClient {
                         Choose one type of game (write a number):
                         1 - Russian checkers / Szaszki
                         2 - English checkers
-                        3 - Some type
+                        3 - Polish checkers
                         """);
         int type = 0;
         while (type <= 0 || 4 <= type) {
@@ -41,8 +41,8 @@ public class ServerClient {
                     gameExample = new Game(GameType.English, 8);
                 }
                 if(type == 3) {
-                    System.out.println("International checkers was chosen");
-                    gameExample = new Game(GameType.SomeType2, 10);
+                    System.out.println("Polish checkers was chosen");
+                    gameExample = new Game(GameType.Polish, 10);
                 }
                 pool.execute(gameExample.new Player(listener.accept(), Color.White));
                 pool.execute(gameExample.new Player(listener.accept(), Color.Black));

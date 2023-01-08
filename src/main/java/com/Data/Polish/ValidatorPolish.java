@@ -11,7 +11,7 @@ public class ValidatorPolish extends AbstractValidator {
     public int isValidMove(Board board, Move move, Move lastMove, Color playerMark){
 
         this.playerMark = playerMark;
-        //TODO some logic to check validation of moves
+
         int startX = move.getX1();
         int startY = move.getY1();
         int endX = move.getX2();
@@ -170,7 +170,6 @@ public class ValidatorPolish extends AbstractValidator {
         System.out.println("Queen move is valid");
         return 1;
     }
-
     private boolean isAnyPawnCapturePossible(int startX, int startY,Board board){
         for(int i = -1; i <= 1; i += 2) {
             for(int j = -1; j <= 1; j += 2) {
@@ -254,6 +253,13 @@ public class ValidatorPolish extends AbstractValidator {
             if(isAnyQueenCapturePossible(startX, startY, board)) {
                 return true;
             }
+        }
+        return false;
+    }
+    @Override
+    public boolean checkForNextMove(int startX, int startY, Board board) {
+        if(isAnyPawnCapturePossible(startX, startY, board)) {
+            return true;
         }
         return false;
     }
