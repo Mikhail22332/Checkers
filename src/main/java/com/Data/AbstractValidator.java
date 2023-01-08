@@ -1,9 +1,7 @@
 package com.Data;
 
 public abstract class AbstractValidator {
-    public int isValidMove(Board board, Move move, Color mark){
-        return 0;
-    }
+
     public boolean isAnyCaptureForThatField(Board board, int startX, int startY) {return false;}
     //0 -impossible move, 1 - simple move, 2- capture
     public abstract int isValidMove(Board board, Move move, Move lastMove, Color playerMark);

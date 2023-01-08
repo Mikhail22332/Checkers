@@ -5,6 +5,7 @@ import com.Data.*;
 public class ValidatorStandart extends AbstractValidator {
     private Color playerMark = Color.NoColor;
     private boolean isAnyCapture = false;
+    private boolean isLastMoveCapture = false;
     //0 -impossible move, 1 - simple move, 2- capture
     @Override
     public int isValidMove(Board board, Move move, Move lastMove, Color playerMark){
@@ -16,9 +17,11 @@ public class ValidatorStandart extends AbstractValidator {
         int endX = move.getX2();
         int endY = move.getY2();
 
+        isLastMoveCapture = false;
         if(lastMove != null) {
             int lastX = lastMove.getX2();
             int lastY = lastMove.getY2();
+            isLastMoveCapture = true;
             if(startX != lastX || startY != lastY) {
                 System.out.println("You can move only one piece, which made capture");
                 return 0;
@@ -97,7 +100,7 @@ public class ValidatorStandart extends AbstractValidator {
         // Check move with capture
         if(Math.abs(deltaX) == 2 && Math.abs(deltaY) == 2){
             // Check piece which will be captured
-            if(board.getField(midX,midY).getPieceColor() != playerMark){
+            if(board.getField(midX,midY).getPieceColor() != playerMark && !board.getField(midX,midY).getPieceType().equals(PieceType.Blank)){
                 board.setField(new Piece(PieceType.Blank, Color.NoColor), midX, midY);
                 System.out.println("Move with capture");
                 return 2;
@@ -106,7 +109,7 @@ public class ValidatorStandart extends AbstractValidator {
             return 0;
         }
         // You must capture
-        if(isAnyCapture) {
+        if(isAnyCapture || isLastMoveCapture) {
             System.out.println("You must capture enemy piece");
             return 0;
         }
@@ -135,9 +138,8 @@ public class ValidatorStandart extends AbstractValidator {
         int enemyX = 0;
         int enemyY = 0;
         boolean isPassingEnemy = false;
-
-        for(int i = startX + deltaX; i != endX; i += directionX){
-            for(int j = startY + deltaY; j != endY; j += directionY){
+        for(int i = startX + directionX; i != endX; i += directionX){
+            for(int j = startY + directionY; j != endY; j += directionY){
                 if(board.getField(i,j).getPieceColor() == Color.NoColor) {
                     continue;
                 }
@@ -162,7 +164,7 @@ public class ValidatorStandart extends AbstractValidator {
             board.setField(new Piece(PieceType.Blank, Color.NoColor), enemyX, enemyY);
             return 2;
         }
-        if(isAnyCapture) {
+        if(isAnyCapture || isLastMoveCapture) {
             System.out.println("You must capture enemy piece");
             return 0;
         }
