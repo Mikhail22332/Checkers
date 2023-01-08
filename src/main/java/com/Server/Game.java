@@ -43,7 +43,7 @@ public class Game {
                 validator.makeMove(board, move);
                 lastMyMove = move;
                 // Check is there any more move with capture
-                if(validator.isAnyCaptureForThatField(board, move.getX2(), move.getY2())) {
+                if(validator.isAnyCaptureForThatField(board, lastMyMove.getX2(), lastMyMove.getY2())) {
                     output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
                     return false;
                 }

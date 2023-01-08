@@ -1,12 +1,14 @@
 package com.Data;
 
 public abstract class AbstractValidator {
-    public int isValidMove(Board board, Move move){
+    public int isValidMove(Board board, Move move, Color mark){
         return 0;
     }
+    public boolean isAnyCaptureForThatField(Board board, int startX, int startY) {return false;}
+    //0 -impossible move, 1 - simple move, 2- capture
+    public abstract int isValidMove(Board board, Move move, Move lastMove, Color playerMark);
+
     public void makeMove(Board board, Move move){}
-    public void makeCaptureMove(Board board, Move move){}
-    public void makePromotion(Board board, Move move){}
     private boolean isWhiteWin(Board board){
         boolean flag = true;
         for(int i = 0; i < board.getSize(); i++){
@@ -47,4 +49,6 @@ public abstract class AbstractValidator {
         else
             return false;
     }
+
+    public abstract void setPlayerMark(Color playerMark);
 }
