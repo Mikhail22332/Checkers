@@ -72,17 +72,11 @@ public class ValidatorStandart extends AbstractValidator {
     private boolean checkPromotion(Piece current, int size, int x2) {
         if(current.getPieceType() != PieceType.Pawn) {return false;}
         if(x2 == 0 && current.getPieceColor() == Color.White){return true;}
-        if(x2 == size - 1 && current.getPieceColor() == Color.Black){return true;}
-        return false;
+        return x2 == size - 1 && current.getPieceColor() == Color.Black;
     }
 
-    private boolean outOfBounds(int x, int y){
-        if (!(x>=0 && x < 8 && y >= 0 && y < 8)){
-            return true;
-        }
-        else{
-            return false;
-        }
+    private boolean outOfBounds(Board board, int x, int y){
+        return !(x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize());
     }
     private int validPawnMove(Board board, Move move){
         int startX = move.getX1();
@@ -175,7 +169,7 @@ public class ValidatorStandart extends AbstractValidator {
             for(int j = -1; j <= 1; j += 2) {
                 int endX = startX + i * 2;
                 int endY = startY + j * 2;
-                boolean outOfBounds = outOfBounds(endX, endY);
+                boolean outOfBounds = outOfBounds(board, endX, endY);
                 if (outOfBounds || Math.abs(endX-startX) != 2 || Math.abs(endY-startY) != 2) {
                     continue;
                 }
@@ -204,7 +198,7 @@ public class ValidatorStandart extends AbstractValidator {
                 while(true) {
                     currentX += i;
                     currentY += j;
-                    if(outOfBounds(currentX + i, currentY + j))
+                    if(outOfBounds(board, currentX + i, currentY + j))
                         break;
                     Piece currentPiece = board.getField(currentX, currentY);
                     if(currentPiece.getPieceType() == PieceType.Blank) {

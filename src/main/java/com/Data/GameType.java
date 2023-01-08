@@ -1,5 +1,7 @@
 package com.Data;
 
 public enum GameType {
-    Standart
+    Russian,
+    English,
+    SomeType2
 }

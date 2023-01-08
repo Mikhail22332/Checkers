@@ -14,11 +14,18 @@ public class Game {
     AbstractFactory factoryBoard;
     AbstractValidator validator;
     Player currentPlayer;
+    public Game(){}
     public Game(GameType type, int size){
-        if(type == GameType.Standart){
+        if(type == GameType.Russian){
             factoryBoard = new FactoryBoardStandart();
             board = factoryBoard.CreateBoard(size);
             validator = new ValidatorStandart();
+        }
+        if(type == GameType.English) {
+
+        }
+        if(type == GameType.SomeType2) {
+
         }
     }
 
