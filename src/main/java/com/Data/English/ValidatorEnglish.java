@@ -1,8 +1,8 @@
-package com.Data.Standart;
+package com.Data.English;
 
 import com.Data.*;
 
-public class ValidatorStandart extends AbstractValidator {
+public class ValidatorEnglish extends AbstractValidator {
     private Color playerMark = Color.NoColor;
     private boolean isAnyCapture = false;
     private boolean isLastMoveCapture = false;
@@ -75,11 +75,17 @@ public class ValidatorStandart extends AbstractValidator {
     private boolean checkPromotion(Piece current, int size, int x2) {
         if(current.getPieceType() != PieceType.Pawn) {return false;}
         if(x2 == 0 && current.getPieceColor() == Color.White){return true;}
-        return x2 == size - 1 && current.getPieceColor() == Color.Black;
+        if(x2 == size - 1 && current.getPieceColor() == Color.Black){return true;}
+        return false;
     }
 
-    private boolean outOfBounds(Board board, int x, int y){
-        return !(x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize());
+    private boolean outOfBounds(int x, int y){
+        if (!(x>=0 && x < 8 && y >= 0 && y < 8)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     private int validPawnMove(Board board, Move move){
         int startX = move.getX1();
@@ -91,10 +97,15 @@ public class ValidatorStandart extends AbstractValidator {
         int midX = startX + deltaX/2;
         int midY = startY + deltaY/2;
         int direction = playerMark == Color.White ? -1 : 1;
+        // Check is correct direction
+        if(deltaX / Math.abs(deltaX) != direction) {
+            System.out.println("Not correct direction");
+            return 0;
+        }
         // Check move with capture
         if(Math.abs(deltaX) == 2 && Math.abs(deltaY) == 2){
             // Check piece which will be captured
-            if(board.getField(midX,midY).getPieceColor() != playerMark && !board.getField(midX,midY).getPieceType().equals(PieceType.Blank)){
+            if(board.getField(midX,midY).getPieceColor() != playerMark && board.getField(midX,midY).getPieceType() != (PieceType.Blank)){
                 board.setField(new Piece(PieceType.Blank, Color.NoColor), midX, midY);
                 System.out.println("Move with capture");
                 return 2;
@@ -105,11 +116,6 @@ public class ValidatorStandart extends AbstractValidator {
         // You must capture
         if(isAnyCapture || isLastMoveCapture) {
             System.out.println("You must capture enemy piece");
-            return 0;
-        }
-        // Check is correct direction
-        if(deltaX / Math.abs(deltaX) != direction) {
-            System.out.println("Not correct direction");
             return 0;
         }
         // Check move without capture
@@ -137,25 +143,27 @@ public class ValidatorStandart extends AbstractValidator {
         while(i != endX && j != endY ){
             i += directionX;
             j += directionY;
-            if(board.getField(i,j).getPieceColor() == Color.NoColor) {
+            if (board.getField(i, j).getPieceColor() == Color.NoColor) {
                 continue;
             }
             // Check is there at least one enemy piece between start and end
-            if(board.getField(i,j).getPieceColor() != playerMark && !isPassingEnemy){
+            if (board.getField(i, j).getPieceColor() != playerMark && !isPassingEnemy) {
                 isPassingEnemy = true;
                 enemyX = i;
                 enemyY = j;
+                if(i + directionX != endX || j + directionY != endY) {
+                    return 0;
+                }
             }
             // Check is there more than one enemy piece between start and end
-            else if(board.getField(i,j).getPieceColor() != playerMark && isPassingEnemy) {
+            else if (board.getField(i, j).getPieceColor() != playerMark && isPassingEnemy) {
                 return 0;
             }
             // Check is there at least one allies piece between start and end
-            else if(board.getField(i,j).getPieceColor() == playerMark) {
+            else if (board.getField(i, j).getPieceColor() == playerMark) {
                 return 0;
             }
         }
-
         if (isPassingEnemy) {
             System.out.println("Enemy was killed at " + enemyX + " " + enemyY);
             board.setField(new Piece(PieceType.Blank, Color.NoColor), enemyX, enemyY);
@@ -170,29 +178,38 @@ public class ValidatorStandart extends AbstractValidator {
     }
 
     private boolean isAnyPawnCapturePossible(int startX, int startY,Board board){
-        for(int i = -1; i <= 1; i += 2) {
-            for(int j = -1; j <= 1; j += 2) {
-                int endX = startX + i * 2;
-                int endY = startY + j * 2;
-                boolean outOfBounds = outOfBounds(board, endX, endY);
-                if (outOfBounds || Math.abs(endX-startX) != 2 || Math.abs(endY-startY) != 2) {
-                    continue;
-                }
-                Piece pieceAtEnd = board.getField(endX, endY);
-                if(pieceAtEnd.getPieceType() != PieceType.Blank){
-                    continue;
-                }
-                int midX = (startX + endX) / 2;
-                int midY = (startY + endY) / 2;
-                Piece pieceAtMiddle = board.getField(midX, midY);
-                if(pieceAtMiddle.getPieceType() == PieceType.Blank) {
-                    continue;
-                }
-                if(pieceAtMiddle.getPieceColor() != playerMark) {
-                    return true;
-                }
+
+        for(int j = -1; j <= 1; j += 2) {
+            Piece pieceAtStart = board.getField(startX, startY);
+            int directionX = 0;
+            if(pieceAtStart.getPieceColor() == Color.White){
+                directionX = -1;
+            }
+            if(pieceAtStart.getPieceColor() == Color.Black){
+                directionX = 1;
+            }
+            int endX = startX + directionX * 2;
+            int endY = startY + j * 2;
+
+            boolean outOfBounds = outOfBounds(endX, endY);
+            if (outOfBounds || Math.abs(endX-startX) != 2 || Math.abs(endY-startY) != 2) {
+                continue;
+            }
+            Piece pieceAtEnd = board.getField(endX, endY);
+            if(pieceAtEnd.getPieceType() != PieceType.Blank){
+                continue;
+            }
+            int midX = (startX + endX) / 2;
+            int midY = (startY + endY) / 2;
+            Piece pieceAtMiddle = board.getField(midX, midY);
+            if(pieceAtMiddle.getPieceType() == PieceType.Blank) {
+                continue;
+            }
+            if(pieceAtMiddle.getPieceColor() != playerMark) {
+                return true;
             }
         }
+
         return false;
     }
     private boolean isAnyQueenCapturePossible(int startX, int startY, Board board) {
@@ -203,7 +220,7 @@ public class ValidatorStandart extends AbstractValidator {
                 while(true) {
                     currentX += i;
                     currentY += j;
-                    if(outOfBounds(board, currentX + i, currentY + j))
+                    if(outOfBounds(currentX + i, currentY + j))
                         break;
                     Piece currentPiece = board.getField(currentX, currentY);
                     if(currentPiece.getPieceType() == PieceType.Blank) {
@@ -217,7 +234,7 @@ public class ValidatorStandart extends AbstractValidator {
                             return true;
                         }
                         else{
-                            break;
+                            return false;
                         }
                     }
                     if(currentPiece.getPieceColor() == playerMark) {

@@ -1,6 +1,8 @@
 package com.Server;
 
 import com.Data.*;
+import com.Data.English.ValidatorEnglish;
+import com.Data.English.FactoryBoardEnglish;
 import com.Data.Standart.ValidatorStandart;
 import com.Data.Standart.FactoryBoardStandart;
 
@@ -22,11 +24,14 @@ public class Game {
             validator = new ValidatorStandart();
         }
         if(type == GameType.English) {
-
+            factoryBoard = new FactoryBoardEnglish();
+            board = factoryBoard.CreateBoard(size);
+            validator = new ValidatorEnglish();
         }
         if(type == GameType.SomeType2) {
 
         }
+
     }
 
     class Player implements Runnable{

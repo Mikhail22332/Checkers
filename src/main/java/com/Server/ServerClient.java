@@ -15,8 +15,8 @@ public class ServerClient {
         port = sc.nextInt();*/
         System.out.println("""
                         Choose one type of game (write a number):
-                        1 - Russian checkers / Shashki
-                        2 - Some type
+                        1 - Russian checkers / Szaszki
+                        2 - English checkers
                         3 - Some type
                         """);
         int type = 0;
