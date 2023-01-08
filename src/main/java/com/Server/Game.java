@@ -16,8 +16,10 @@ public class Game {
     AbstractFactory factoryBoard;
     AbstractValidator validator;
     Player currentPlayer;
+    GameType currentType;
     public Game(){}
     public Game(GameType type, int size){
+        currentType = type;
         if(type == GameType.Russian){
             factoryBoard = new FactoryBoardStandart();
             validator = new ValidatorStandart();
@@ -97,13 +99,27 @@ public class Game {
                 output.println("MESSAGE WELCOME WHITE " + board.getSize());
             else
                 output.println("MESSAGE WELCOME BLACK " + board.getSize());
-            if (mark == Color.White) {
-                currentPlayer = this;
-                output.println("MESSAGE Waiting for opponent to connect");
-            } else {
-                opponent = currentPlayer;
-                opponent.opponent = this;
-                opponent.output.println("MESSAGE YOUR MOVE");
+            if(currentType == GameType.English){
+                // First move to Black
+                if (mark == Color.Black) {
+                    currentPlayer = this;
+                    output.println("MESSAGE Waiting for opponent to connect");
+                } else {
+                    opponent = currentPlayer;
+                    opponent.opponent = this;
+                    opponent.output.println("MESSAGE YOUR MOVE");
+                }
+            }
+            else {
+                // First move to White
+                if (mark == Color.White) {
+                    currentPlayer = this;
+                    output.println("MESSAGE Waiting for opponent to connect");
+                } else {
+                    opponent = currentPlayer;
+                    opponent.opponent = this;
+                    opponent.output.println("MESSAGE YOUR MOVE");
+                }
             }
         }
         private void processCommands(){
