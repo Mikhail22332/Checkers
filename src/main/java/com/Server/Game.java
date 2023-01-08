@@ -28,23 +28,29 @@ public class Game {
         Socket socket;
         Scanner input;
         PrintWriter output;
+        Move lastMyMove;
 
         public Player(Socket socket, Color mark){
             this.socket = socket;
             this.mark = mark;
         }
-        //0 - impossible move, 1 - simple move, 2 - capture
+        // 0 - impossible move, 1 - simple move, 2 - move with capture
         public boolean moveValidation(Move move){
-            int typeOfMove = validator.isValidMove(board, move, mark);
-            //System.out.println(typeOfMove);
+            int typeOfMove = validator.isValidMove(board, move, lastMyMove, mark);
+            System.out.println(typeOfMove);
             if (typeOfMove == 2) {
-                validator.makeCaptureMove(board, move);
-                output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
-                return false;
+                validator.makeMove(board, move);
+                lastMyMove = move;
+                if(validator.isAnyCaptureForThatField(board, move.getX2(), move.getY2())) {
+                    output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
+                    return false;
+                }
+                output.println("VALID_MOVE WAIT " + board.boardToString());
+                return true;
             }
-            currentPlayer = currentPlayer.opponent;
             if(typeOfMove == 1){
                 validator.makeMove(board, move);
+                lastMyMove = move;
                 output.println("VALID_MOVE WAIT " + board.boardToString());
                 return true;
             }
@@ -99,6 +105,8 @@ public class Game {
             try {
                 System.out.println(move);
                 if(!moveValidation(Move.StringToMove(move))) {return;}
+                lastMyMove = null;
+                currentPlayer = currentPlayer.opponent;
                 opponent.output.println("OPPONENT_MOVED " + board.boardToString());
                 if (validator.isWinner(board, mark)) {
                     output.println("VICTORY");
