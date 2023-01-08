@@ -44,7 +44,6 @@ public class ClientApplication extends Application {
         primaryStage.show();
 
         // Connect to the server in a separate thread
-
         new Thread(() -> {
             try {
                 // Connect to the server
