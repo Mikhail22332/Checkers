@@ -18,6 +18,7 @@ class recursionTestsForPawn{
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 1);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 2);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 2);
+        board.printBoard();
         Assertions.assertEquals(2, validator.isRecursionPossible(board, 5, 1));
     }
     //test recursion with two options: 1) kill one enemy

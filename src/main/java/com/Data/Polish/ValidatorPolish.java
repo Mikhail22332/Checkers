@@ -278,32 +278,35 @@ public class ValidatorPolish extends AbstractValidator {
 
     public int isRecursionPossible(Board board, int startX, int startY) {
         ArrayList <Move> allMoves = getLongestPossibleKillChain(board, startX, startY);
-        return allMoves.size() > 0 ? allMoves.get(0).getStepCounter() : -1;
+        return allMoves.size() > 0 ? allMoves.get(0).getStepCounter() : 0;
     }
     private Set <Pair<Integer, Integer>> beatedFields = new HashSet<>();
     private ArrayList<Move>  getLongestPossibleKillChain(Board board, int startX, int startY) {
         beatedFields.clear();
         Piece pieceAtStart = board.getField(startX, startY);
         board.setField(new Piece(PieceType.Blank, Color.NoColor), startX, startY);
-        ArrayList<Move> possibleMoves = recursion(board, startX, startY, pieceAtStart.getPieceType(), 1);
+        ArrayList<Move> possibleMoves = recursion(board, startX, startY, pieceAtStart.getPieceType(), 0);
         board.setField(pieceAtStart, startX, startY);
+        System.out.println("PossibleMoves");
+        for(Move i : possibleMoves) {
+            System.out.println(i.getX2() + " " + i.getY2());
+        }
         return possibleMoves;
     }
 
     private ArrayList<Move>  recursion(Board board, int startX, int startY, PieceType type, int step) {
         ArrayList <Move> movesFromStart = getAllPossibleMovesWithCapture(board, startX, startY, type, step);
         ArrayList <Move> movesThatCanBe = new ArrayList<>();
+        if(movesFromStart.size() == 0) {
+            movesThatCanBe.add(new Move(startX, startY, -1, -1, step));
+            return movesThatCanBe;
+        }
         int maxChain = 0;
         for(Move currentMove : movesFromStart) {
             Pair<Integer, Integer> beatedField = getBeatedField(board, currentMove);
             beatedFields.add(beatedField);
             ArrayList <Move> newMoveList = recursion(board, currentMove.getX2(), currentMove.getY2(), type, step + 1);
             beatedFields.remove(beatedField);
-            if(newMoveList.size() == 0) {
-                Move newMove = currentMove;
-                newMove.setStepCounter(step);
-                movesThatCanBe.add(currentMove);
-            }
             for(Move moveAfterCurrent : newMoveList) {
                 int currentChain = moveAfterCurrent.getStepCounter();
                 if(currentChain > currentMove.getStepCounter()) {
@@ -314,7 +317,7 @@ public class ValidatorPolish extends AbstractValidator {
         }
         for(Move currentMove : movesFromStart) {
             if(currentMove.getStepCounter() == maxChain) {
-                movesThatCanBe.add(currentMove);
+                 movesThatCanBe.add(currentMove);
             }
         }
         return movesThatCanBe;
@@ -399,6 +402,8 @@ public class ValidatorPolish extends AbstractValidator {
                         int endX = currentX;
                         int endY = currentY;
                         while(!outOfBounds(board, endX + i, endY + j)) {
+                            endX += i;
+                            endY += j;
                             Piece endPiece = board.getField(endX, endY);
                             if (endPiece.getPieceType() == PieceType.Blank) {
                                 moveList.add(new Move(startX, startY, endX, endY));
