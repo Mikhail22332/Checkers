@@ -165,8 +165,9 @@ class recursionTestsForQueen{
         board.setField(new Piece(PieceType.Pawn, Color.White), 3, 9);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 7, 3);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 8);
+        board.setField(new Piece(PieceType.Pawn, Color.White), 2, 8);
         board.printBoard();
-        Assertions.assertEquals(3, validator.isRecursionPossible(board, 8, 1));
+        Assertions.assertEquals(4, validator.isRecursionPossible(board, 3, 3));
     }
     @Test
     void queenTest4(){
@@ -185,7 +186,7 @@ class recursionTestsForQueen{
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 7);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 4);
         board.printBoard();
-        Assertions.assertEquals(7, validator.isRecursionPossible(board, 8, 1));
+        Assertions.assertEquals(8, validator.isRecursionPossible(board, 9, 0));
     }
 }
 

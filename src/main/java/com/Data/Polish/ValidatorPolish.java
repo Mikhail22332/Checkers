@@ -1,6 +1,7 @@
 package com.Data.Polish;
 
 import com.Data.*;
+import com.Data.Exceptions.WarningException;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class ValidatorPolish extends AbstractValidator {
         }
         // Check is correct direction
         if(deltaX / Math.abs(deltaX) != direction) {
-            System.out.println("Not correct direction");
+            new WarningException("Not correct direction");
             return 0;
         }
         // Check move without capture
@@ -176,6 +177,7 @@ public class ValidatorPolish extends AbstractValidator {
             return 2;
         }
         if(isAnyCapture || isLastMoveCapture) {
+
             System.out.println("You must capture enemy piece");
             return 0;
         }
@@ -287,10 +289,6 @@ public class ValidatorPolish extends AbstractValidator {
         board.setField(new Piece(PieceType.Blank, Color.NoColor), startX, startY);
         ArrayList<Move> possibleMoves = recursion(board, startX, startY, pieceAtStart.getPieceType(), 0);
         board.setField(pieceAtStart, startX, startY);
-        System.out.println("PossibleMoves");
-        for(Move i : possibleMoves) {
-            System.out.println(i.getX2() + " " + i.getY2());
-        }
         return possibleMoves;
     }
 
