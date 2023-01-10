@@ -5,13 +5,26 @@ public class Move {
     private int y1 = 0;
     private int x2 = 0;
     private int y2 = 0;
+    private int stepCounter = 0;
     public Move(){}
     public Move(int x1, int y1, int x2, int y2){
         this.x1 = x1;
-        this.x2 = x2;
         this.y1 = y1;
+        this.x2 = x2;
         this.y2 = y2;
     }
+    public Move(int x1, int y1, int x2, int y2, int step) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+        this.stepCounter = step;
+    }
+
+    public void setStepCounter(int stepCounter) { this.stepCounter = stepCounter; }
+
+    public int getStepCounter() { return stepCounter; }
+
     public void SetMove(String s[]){
         this.x1 = Integer.parseInt(s[0]);
         this.y1 = Integer.parseInt(s[1]);

@@ -170,7 +170,7 @@ public class ValidatorEnglish extends AbstractValidator {
         return 1;
     }
 
-    private boolean isAnyPawnCapturePossible(int startX, int startY,Board board){
+    private boolean isAnyPawnCapturePossible(Board board, int startX, int startY){
 
         for(int j = -1; j <= 1; j += 2) {
             Piece pieceAtStart = board.getField(startX, startY);
@@ -205,7 +205,7 @@ public class ValidatorEnglish extends AbstractValidator {
 
         return false;
     }
-    private boolean isAnyQueenCapturePossible(int startX, int startY, Board board) {
+    private boolean isAnyQueenCapturePossible(Board board, int startX, int startY) {
         for(int i = -1; i <= 1; i += 2) {
             for(int j = -1; j <= 1; j += 2) {
                 int currentX = startX;
@@ -254,12 +254,12 @@ public class ValidatorEnglish extends AbstractValidator {
             return false;
         }
         if(movingPiece.getPieceType() == PieceType.Pawn) {
-            if(isAnyPawnCapturePossible(startX, startY, board)) {
+            if(isAnyPawnCapturePossible(board, startX, startY)) {
                 return true;
             }
         }
         if(movingPiece.getPieceType() == PieceType.Queen) {
-            if(isAnyQueenCapturePossible(startX, startY, board)) {
+            if(isAnyQueenCapturePossible(board, startX, startY)) {
                 return true;
             }
         }

@@ -58,7 +58,7 @@ public class Game {
                 validator.makeMove(board, move);
                 lastMyMove = move;
                 // Check is there any more move with capture
-                if(validator.checkForNextMove(lastMyMove.getX2(), lastMyMove.getY2(), board)) {
+                if(validator.checkForNextMove(board, lastMyMove.getX2(), lastMyMove.getY2())) {
                     output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
                     return false;
                 }
