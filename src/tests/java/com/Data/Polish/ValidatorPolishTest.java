@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//tests must return the longest possible chain of hitting
+//tests must return the longest possible chain of hitting\\
+
+//tests for pawn recursion
 class recursionTestsForPawn{
 
     //test recursion with only one possible way
@@ -103,6 +105,87 @@ class recursionTestsForPawn{
         board.setField(new Piece(PieceType.Pawn, Color.Black), 8, 7);
         board.printBoard();
         Assertions.assertEquals(10, validator.isRecursionPossible(board, 5, 4));
+    }
+    //empty board test
+    @Test
+    void pawnTest6(){
+        Board board = new Board(10);
+        ValidatorPolish validator = new ValidatorPolish();
+        validator.setPlayerMark(Color.White);
+        board.setField(new Piece(PieceType.Pawn, Color.White), 5, 1);
+        Assertions.assertEquals(0, validator.isRecursionPossible(board, 5, 1));
+    }
+}
+
+//
+class recursionTestsForQueen{
+    //simple chain
+    @Test
+    void queenTest1(){
+        Board board = new Board(10);
+        ValidatorPolish validator = new ValidatorPolish();
+        validator.setPlayerMark(Color.White);
+        board.setField(new Piece(PieceType.Queen, Color.White), 5, 1);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 2);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 2);
+        board.printBoard();
+        Assertions.assertEquals(2, validator.isRecursionPossible(board, 5, 1));
+    }
+    //a bit longer chain
+    @Test
+    void queenTest2(){
+        Board board = new Board(10);
+        ValidatorPolish validator = new ValidatorPolish();
+        validator.setPlayerMark(Color.White);
+        board.setField(new Piece(PieceType.Queen, Color.White), 8, 1);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 6, 1);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 6, 3);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 8, 5);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 6, 7);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 5);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 7);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 3);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 5);
+        board.printBoard();
+        Assertions.assertEquals(8, validator.isRecursionPossible(board, 8, 1));
+    }
+    //
+    @Test
+    void queenTest3(){
+        Board board = new Board(10);
+        ValidatorPolish validator = new ValidatorPolish();
+        validator.setPlayerMark(Color.White);
+        board.setField(new Piece(PieceType.Queen, Color.White), 3, 3);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 5);
+        board.setField(new Piece(PieceType.Pawn, Color.White), 6, 6);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 1);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 7, 1);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 3, 7);
+        board.setField(new Piece(PieceType.Pawn, Color.White), 5, 3);
+        board.setField(new Piece(PieceType.Pawn, Color.White), 3, 9);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 7, 3);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 8);
+        board.printBoard();
+        Assertions.assertEquals(3, validator.isRecursionPossible(board, 8, 1));
+    }
+    @Test
+    void queenTest4(){
+        Board board = new Board(10);
+        ValidatorPolish validator = new ValidatorPolish();
+        validator.setPlayerMark(Color.White);
+        board.setField(new Piece(PieceType.Queen, Color.White), 9, 0);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 7, 0);
+        board.setField(new Piece(PieceType.Pawn, Color.White), 9, 2);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 8, 3);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 8, 5);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 6, 7);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 7);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 1);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 3);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 7);
+        board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 4);
+        board.printBoard();
+        Assertions.assertEquals(7, validator.isRecursionPossible(board, 8, 1));
     }
 }
 
@@ -234,3 +317,4 @@ class isValidMovePawn{
         Assertions.assertEquals(0, validator.isValidMove(board, new Move(4,3,3,4), null, Color.Black));
     }
 }
+

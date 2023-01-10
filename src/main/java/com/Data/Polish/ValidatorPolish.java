@@ -307,6 +307,11 @@ public class ValidatorPolish extends AbstractValidator {
             beatedFields.add(beatedField);
             ArrayList <Move> newMoveList = recursion(board, currentMove.getX2(), currentMove.getY2(), type, step + 1);
             beatedFields.remove(beatedField);
+            if(newMoveList.size() == 0) {
+                Move newMove = currentMove;
+                newMove.setStepCounter(step);
+                movesThatCanBe.add(currentMove);
+            }
             for(Move moveAfterCurrent : newMoveList) {
                 int currentChain = moveAfterCurrent.getStepCounter();
                 if(currentChain > currentMove.getStepCounter()) {
