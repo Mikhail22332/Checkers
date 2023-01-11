@@ -20,7 +20,6 @@ class recursionTestsForPawn{
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 1);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 2);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 2);
-        board.printBoard();
         Assertions.assertEquals(2, validator.isRecursionPossible(board, 5, 1));
     }
     //test recursion with two options: 1) kill one enemy
@@ -197,7 +196,7 @@ class isValidMovePawn{
     //move white pawn behind
     @Test
     void Test1(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.White), 2, 2);
         Assertions.assertEquals(0, validator.isValidMove(board, new Move(2,2,3,3), null, Color.White));
@@ -205,7 +204,7 @@ class isValidMovePawn{
     //move white pawn to empty cell
     @Test
     void Test2(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 0);
 
@@ -214,7 +213,7 @@ class isValidMovePawn{
     //move black pawn behind
     @Test
     void Test3(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn,Color.Black), 2, 3);
         Assertions.assertEquals(0, validator.isValidMove(board, new Move(2,3,1,2), null, Color.Black));
@@ -222,7 +221,7 @@ class isValidMovePawn{
     //move black pawn to empty cell
     @Test
     void Test4(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 3);
 
@@ -231,7 +230,7 @@ class isValidMovePawn{
     //move white pawn to occupied cell
     @Test
     void Test5(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 1);
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 0);
@@ -240,7 +239,7 @@ class isValidMovePawn{
     // move to distance > 1 like quene
     @Test
     void Test6(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 4);
         board.printBoard();
@@ -249,7 +248,7 @@ class isValidMovePawn{
     // kill piece of your team
     @Test
     void Test7(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 4);
         board.setField(new Piece(PieceType.Pawn, Color.White), 4, 5);
@@ -258,7 +257,7 @@ class isValidMovePawn{
     // kill piece of enemy team
     @Test
     void Test8(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 4);
         board.setField(new Piece(PieceType.Pawn, Color.White), 4, 5);
@@ -267,7 +266,7 @@ class isValidMovePawn{
     // try to kill enemy piece like queen
     @Test
     void Test9(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 4);
         board.setField(new Piece(PieceType.Pawn, Color.White), 4, 5);
@@ -276,7 +275,7 @@ class isValidMovePawn{
     // try to kill enemy piece and place pawn to occupied cell
     @Test
     void Test10(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 3);
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 2);
@@ -286,7 +285,7 @@ class isValidMovePawn{
     // chain of kills
     @Test
     void Test11(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.Black), 0, 7);
         board.setField(new Piece(PieceType.Pawn, Color.White), 1, 6);
@@ -298,7 +297,7 @@ class isValidMovePawn{
     // chain of kills and move
     @Test
     void Test12(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.Black), 0, 7);
         board.setField(new Piece(PieceType.Pawn, Color.White), 1, 6);
@@ -312,7 +311,7 @@ class isValidMovePawn{
     // move enemy's piece
     @Test
     void Test13(){
-        Board board = new Board(8);
+        Board board = new Board(10);
         AbstractValidator validator = new ValidatorPolish();
         board.setField(new Piece(PieceType.Pawn, Color.White), 4, 3);
         Assertions.assertEquals(0, validator.isValidMove(board, new Move(4,3,3,4), null, Color.Black));

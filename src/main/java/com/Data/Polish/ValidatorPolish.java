@@ -1,23 +1,17 @@
 package com.Data.Polish;
 
 import com.Data.*;
-import com.Data.Exceptions.WarningException;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.SortedSet;
 
 public class ValidatorPolish extends AbstractValidator {
-    private Color playerMark = Color.NoColor;
-    private boolean isAnyCapture = false;
-    private boolean isLastMoveCapture = false;
 
-    //0 -impossible move, 1 - simple move, 2- capture
+    // Return 0 - impossible move, 1 - simple move, 2 - move with capture
     @Override
     public int isValidMove(Board board, Move move, Move lastMove, Color playerMark){
-
         this.playerMark = playerMark;
 
         int startX = move.getX1();
@@ -35,10 +29,6 @@ public class ValidatorPolish extends AbstractValidator {
                 return 0;
             }
         }
-        // ToDo
-        /*listofmove = getLongestPossibleKillChain(...);
-        if(move not in listofmoves)
-            return 0;*/
 
         Piece movingPiece = board.getField(startX, startY);
 
@@ -52,6 +42,21 @@ public class ValidatorPolish extends AbstractValidator {
             return 0;
         }
         this.isAnyCapture = findAllPossibleCaptures(board);
+        // Added
+        ArrayList <Move> listOfMoves = getLongestPossibleKillChain(board, startX, startY);
+        if(isAnyCapture) {
+            boolean flag = false;
+            System.out.println(listOfMoves.size());
+            for(Move i : listOfMoves) {
+                if(move.isEqual(i)) {
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) {
+                return 0;
+            }
+        }
         if(movingPiece.getPieceType() == PieceType.Pawn){
             System.out.println("Check pawn move");
             return validPawnMove(board, move);
@@ -80,23 +85,8 @@ public class ValidatorPolish extends AbstractValidator {
         System.out.println("Board after move");
         board.printBoard();
     }
-
     @Override
-    public void setPlayerMark(Color playerMark) {
-        this.playerMark = playerMark;
-    }
-
-    @Override
-    public boolean checkPromotion(Piece current, int size, int x2) {
-        if(current.getPieceType() != PieceType.Pawn) {return false;}
-        if(x2 == 0 && current.getPieceColor() == Color.White){return true;}
-        return x2 == size - 1 && current.getPieceColor() == Color.Black;
-    }
-
-    private boolean outOfBounds(Board board, int x, int y){
-        return !(x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize());
-    }
-    private int validPawnMove(Board board, Move move){
+    protected int validPawnMove(Board board, Move move){
         int startX = move.getX1();
         int startY = move.getY1();
         int endX = move.getX2();
@@ -124,7 +114,7 @@ public class ValidatorPolish extends AbstractValidator {
         }
         // Check is correct direction
         if(deltaX / Math.abs(deltaX) != direction) {
-            new WarningException("Not correct direction");
+            System.out.println("Not correct direction");
             return 0;
         }
         // Check move without capture
@@ -135,7 +125,8 @@ public class ValidatorPolish extends AbstractValidator {
         System.out.println("Not correct");
         return 0;
     }
-    private int validQueenMove(Board board, Move move){
+    @Override
+    protected int validQueenMove(Board board, Move move){
         int startX = move.getX1();
         int startY = move.getY1();
         int endX = move.getX2();
@@ -177,112 +168,23 @@ public class ValidatorPolish extends AbstractValidator {
             return 2;
         }
         if(isAnyCapture || isLastMoveCapture) {
-
             System.out.println("You must capture enemy piece");
             return 0;
         }
         System.out.println("Queen move is valid");
         return 1;
     }
-    private boolean isAnyPawnCapturePossible(Board board, int startX, int startY){
-        for(int i = -1; i <= 1; i += 2) {
-            for(int j = -1; j <= 1; j += 2) {
-                int endX = startX + i * 2;
-                int endY = startY + j * 2;
-                boolean outOfBounds = outOfBounds(board, endX, endY);
-                if (outOfBounds || Math.abs(endX-startX) != 2 || Math.abs(endY-startY) != 2) {
-                    continue;
-                }
-                Piece pieceAtEnd = board.getField(endX, endY);
-                if(pieceAtEnd.getPieceType() != PieceType.Blank){
-                    continue;
-                }
-                int midX = (startX + endX) / 2;
-                int midY = (startY + endY) / 2;
-                Piece pieceAtMiddle = board.getField(midX, midY);
-                if(pieceAtMiddle.getPieceType() == PieceType.Blank) {
-                    continue;
-                }
-                if(pieceAtMiddle.getPieceColor() != playerMark) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    private boolean isAnyQueenCapturePossible(Board board, int startX, int startY) {
-        for(int i = -1; i <= 1; i += 2) {
-            for(int j = -1; j <= 1; j += 2) {
-                int currentX = startX;
-                int currentY = startY;
-                while(true) {
-                    currentX += i;
-                    currentY += j;
-                    if(outOfBounds(board, currentX + i, currentY + j))
-                        break;
-                    Piece currentPiece = board.getField(currentX, currentY);
-                    if(currentPiece.getPieceType() == PieceType.Blank) {
-                        continue;
-                    }
-                    if(currentPiece.getPieceColor() != playerMark) {
-                        int endX = currentX + i;
-                        int endY = currentY + j;
-                        Piece endPiece = board.getField(endX, endY);
-                        if(endPiece.getPieceType() == PieceType.Blank) {
-                            return true;
-                        }
-                        else{
-                            break;
-                        }
-                    }
-                    if(currentPiece.getPieceColor() == playerMark) {
-                        break;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    private boolean findAllPossibleCaptures(Board board) {
-        for(int i = 0; i < board.getSize(); i++) {
-            for(int j = 0; j < board.getSize(); j++){
-                if(isAnyCaptureForThatField(board, i, j)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public boolean isAnyCaptureForThatField(Board board, int startX, int startY) {
-        Piece movingPiece = board.getField(startX, startY);
-        if(movingPiece.getPieceColor() != playerMark) {
-            return false;
-        }
-        if(movingPiece.getPieceType() == PieceType.Pawn) {
-            if(isAnyPawnCapturePossible(board, startX, startY)) {
-                return true;
-            }
-        }
-        if(movingPiece.getPieceType() == PieceType.Queen) {
-            if(isAnyQueenCapturePossible(board, startX, startY)) {
-                return true;
-            }
-        }
-        return false;
-    }
     @Override
     public boolean checkForNextMove(Board board, int startX, int startY) {
-        if(isAnyPawnCapturePossible(board, startX, startY)) {
-            return true;
-        }
-        return false;
+        return isAnyPawnCapturePossible(board, startX, startY);
     }
-
+    // This method is created for tests for recursion
     public int isRecursionPossible(Board board, int startX, int startY) {
         ArrayList <Move> allMoves = getLongestPossibleKillChain(board, startX, startY);
         return allMoves.size() > 0 ? allMoves.get(0).getStepCounter() : 0;
     }
     private Set <Pair<Integer, Integer>> beatedFields = new HashSet<>();
+    // Return all possible first moves for longest beating chain
     private ArrayList<Move>  getLongestPossibleKillChain(Board board, int startX, int startY) {
         beatedFields.clear();
         Piece pieceAtStart = board.getField(startX, startY);
@@ -291,10 +193,12 @@ public class ValidatorPolish extends AbstractValidator {
         board.setField(pieceAtStart, startX, startY);
         return possibleMoves;
     }
-
+    // Calculate the longest beating chain
+    // Return all possible first moves
     private ArrayList<Move>  recursion(Board board, int startX, int startY, PieceType type, int step) {
-        ArrayList <Move> movesFromStart = getAllPossibleMovesWithCapture(board, startX, startY, type, step);
+        ArrayList <Move> movesFromStart = getAllPossibleMovesWithCapture(board, startX, startY, type);
         ArrayList <Move> movesThatCanBe = new ArrayList<>();
+        System.out.println(startX + " " + startY);
         if(movesFromStart.size() == 0) {
             movesThatCanBe.add(new Move(startX, startY, -1, -1, step));
             return movesThatCanBe;
@@ -305,11 +209,6 @@ public class ValidatorPolish extends AbstractValidator {
             beatedFields.add(beatedField);
             ArrayList <Move> newMoveList = recursion(board, currentMove.getX2(), currentMove.getY2(), type, step + 1);
             beatedFields.remove(beatedField);
-            if(newMoveList.size() == 0) {
-                Move newMove = currentMove;
-                newMove.setStepCounter(step);
-                movesThatCanBe.add(currentMove);
-            }
             for(Move moveAfterCurrent : newMoveList) {
                 int currentChain = moveAfterCurrent.getStepCounter();
                 if(currentChain > currentMove.getStepCounter()) {
@@ -345,7 +244,7 @@ public class ValidatorPolish extends AbstractValidator {
         }
         return null;
     }
-    private ArrayList<Move> getAllPossibleMovesWithCapture(Board board, int startX, int startY, PieceType type, int step) {
+    private ArrayList<Move> getAllPossibleMovesWithCapture(Board board, int startX, int startY, PieceType type) {
         ArrayList<Move> moveList = new ArrayList<Move>();
         if(type == PieceType.Pawn) {
             moveList = getAllCapturesForPawn(board, startX, startY);

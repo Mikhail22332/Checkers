@@ -56,6 +56,12 @@ public class Move {
         s += move.getY1() + ",";
         s += move.getX2() + ",";
         s += move.getY2();
-        return s    ;
+        return s;
+    }
+    public boolean isEqual(Move move) {
+        return this.getX1() == move.getX1() &&
+                this.getY1() == move.getY1() &&
+                this.getX2() == move.getX2() &&
+                this.getY2() == move.getY2();
     }
 }
