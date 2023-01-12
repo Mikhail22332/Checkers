@@ -181,16 +181,16 @@ public class Game {
          */
         private void checkStateOfGame() {
             if(!validator.isPlayerHasAtLeastOneMove(board, mark)) {
-                output.println("DEFEAT, you don't have possible moves");
-                opponent.output.println("VICTORY, opponent doesn't have possible moves");
+                output.println("DEFEAT, you ran out of moves");
+                opponent.output.println("VICTORY, opponent ran out of moves");
             }
             if (validator.isTie()) {
                 output.println("TIE");
                 opponent.output.println("TIE");
             }
             if (validator.isWinner(board, mark)) {
-                output.println("VICTORY, you kill all enemy pieces");
-                opponent.output.println("DEFEAT, you don't have any pieces");
+                output.println("VICTORY, you have killed all enemy's pieces");
+                opponent.output.println("DEFEAT, you have no pieces left");
             }
         }
     }

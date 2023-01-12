@@ -20,20 +20,45 @@ public class ChainFinder {
      * @return maximum possible chain's length
      */
     public int isRecursionPossible(Board board, int startX, int startY) {
-        ArrayList<Move> allMoves = getFirstMovesInLongestChain(board, startX, startY);
+        ArrayList<Move> allMoves = getFirstMovesInLongestChainFromStart(board, startX, startY);
         return allMoves.size() > 0 ? allMoves.get(0).getStepCounter() : 0;
     }
 
-    // Return all possible first moves for the longest beating chain
     /**
-     * Method is used to get access to all possible starting positions
-     * which can lead to the longest beating chain
+     *
+     * @param board
+     * @param startX
+     * @param startY
+     * @return empty array if it is not the starting position of the longest chain.
+     */
+    public ArrayList<Move> getFirstMovesInLongestChain(Board board, int startX, int startY){
+        ArrayList<Move> possibleMoves;
+        int maxChainLength = 0;
+        Piece pieceAtStart = board.getField(startX, startY);
+        for(int i = 0; i < board.getSize(); i++){
+            for(int j = 0; j < board.getSize(); j++){
+                if(board.getField(i, j).getPieceColor() == pieceAtStart.getPieceColor()){
+                    possibleMoves = getFirstMovesInLongestChainFromStart(board, i, j);
+                    maxChainLength = Math.max(maxChainLength, possibleMoves.size() > 0 ? possibleMoves.get(0).getStepCounter() : 0);
+                }
+
+            }
+        }
+        possibleMoves = getFirstMovesInLongestChainFromStart(board, startX, startY);
+        if(maxChainLength > ( possibleMoves.size() > 0 ? possibleMoves.get(0).getStepCounter() : 0)){
+            possibleMoves.clear();
+        }
+        return possibleMoves;
+    }
+    /**
+     * Method is used to get access to all possible moves
+     * which are included to the longest beating chain from that position
      * @param board
      * @param startX
      * @param startY
      * @return ArrayList of moves which are included in the longest possible chains
      */
-    public ArrayList<Move> getFirstMovesInLongestChain(Board board, int startX, int startY) {
+    public ArrayList<Move> getFirstMovesInLongestChainFromStart(Board board, int startX, int startY) {
         beatedFields.clear();
         Piece pieceAtStart = board.getField(startX, startY);
         board.setField(new Piece(PieceType.Blank, Color.NoColor), startX, startY);
