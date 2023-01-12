@@ -24,7 +24,7 @@ public class ChainFinder {
         return allMoves.size() > 0 ? allMoves.get(0).getStepCounter() : 0;
     }
 
-    // Return all possible first moves for longest beating chain
+    // Return all possible first moves for the longest beating chain
     /**
      * Method is used to get access to all possible starting positions
      * which can lead to the longest beating chain

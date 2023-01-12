@@ -31,7 +31,7 @@ class Square extends javafx.scene.control.Control {
         }
         // Add a mouse listener to the square to handle clicks
         setOnMouseClicked(event -> {
-            // Check is our move now
+            // Check if it is the player's move now
             if(!ClientApplication.myNetwork.IsYourMove()) {
                 System.out.println("Not your move");
                 return;
@@ -42,9 +42,8 @@ class Square extends javafx.scene.control.Control {
                 return;
             }
 
-            // If a pawn is already selected, try to move it to this square
+            // If a pawn has been already selected, try to move it to that square
             if (selectedPawn != null) {
-                //System.out.println("Try to move pawn");
                 // If the pawn can be moved to this square, move it and unselect it
                 if (selectedPawn.canMoveTo(row, col)) {
                     String myMove = "MOVE " +
@@ -63,7 +62,6 @@ class Square extends javafx.scene.control.Control {
                     selectedPawn = null;
                 }
             } else if(pawn != null) {
-                //System.out.println("Pawn was selected");
                 // If no pawn is selected, select this pawn
                 pawn.setSelected(true);
                 selectedPawn = pawn;
@@ -107,7 +105,7 @@ class Square extends javafx.scene.control.Control {
     }
 
     /**
-     * Get pawn, which places at that square
+     * Get pawn, which is placed on that square
      * @return
      */
     public Pawn getPawn() {

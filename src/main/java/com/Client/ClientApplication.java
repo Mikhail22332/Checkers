@@ -28,7 +28,7 @@ public class ClientApplication extends Application {
     private static GridPane root;
 
     /**
-     * Setter of size of board
+     * Sets board size and updates field
      * @param newSize
      */
     public static void setSize(int newSize) {
@@ -37,7 +37,8 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Creating application with adding additional thread for getting responses from server
+     * Creates application with additionally added thread in order to
+     * get responses from the server
      * @param primaryStage
      */
     @Override
@@ -97,7 +98,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Method to clear grid, but save some buttons, labels and texts
+     * Method to clear the grid, but without rewriting: buttons, labels and texts
      * @param root
      */
     private static void clearGrid(GridPane root) {
@@ -133,7 +134,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Filling gridPane with squares
+     * Fills gridPane with squares
      * @param root
      */
     private static void addSquares(GridPane root) {
@@ -158,7 +159,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Method to update board after getting response
+     * Method to update the board after receiving the response
      * @param s
      */
     public static void updateSquares(String[] s) {
@@ -197,8 +198,6 @@ public class ClientApplication extends Application {
         double mi = Math.min(width, height);
         for (Node node : root.getChildren()) {
             if (node.getClass() == new Square(0,0).getClass()) {
-                // This is the square at the specified row and column
-                //System.out.println(node.getClass());
                 Square square = (Square) node;
                 square.setSize(mi / size);
             }
@@ -206,7 +205,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Getter of field from board
+     * Gets sertan field on board
      * @param row
      * @param col
      * @return Square
@@ -228,7 +227,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Main method, which launch application
+     * Main method, which launches the application
      * @param args
      */
     public static void main(String[] args)  {

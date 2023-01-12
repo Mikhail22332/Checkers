@@ -17,13 +17,13 @@ public class ClientNetwork {
     public ClientNetwork() {}
 
     /**
-     * Method for player, Is it his turn?
+     * Method for player to check whether the turn is theirs or not
      * @return boolean
      */
     public static boolean IsYourMove() {return isYourMove;}
 
     /**
-     * Method for make connection with server
+     * Method to make connection with server
      * @param ip
      * @throws IOException
      */
@@ -115,7 +115,7 @@ public class ClientNetwork {
     }
 
     /**
-     * Method that call updating of board at application
+     * Method that invokes view update method
      * @param board
      */
     private void updateBoard(String board) {
@@ -124,7 +124,7 @@ public class ClientNetwork {
     }
 
     /**
-     * Method to send a completed move to server
+     * Method to send a finished move to the server
      * @param move
      * @throws Exception
      */
@@ -135,7 +135,7 @@ public class ClientNetwork {
     }
 
     /**
-     * Method to call Alert with message at application
+     * Method to invoke Alert with message in application
      * @param message
      */
     private void sendAlert(String message) {

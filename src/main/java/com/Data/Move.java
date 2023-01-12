@@ -1,7 +1,7 @@
 package com.Data;
 
 /**
- * Class Move is used to create and modify and reposition
+ * Class Move is used to create and modify and reposition piece
  */
 public class Move {
     private int startX = 0;

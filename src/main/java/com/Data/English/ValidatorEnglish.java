@@ -25,7 +25,7 @@ public class ValidatorEnglish extends AbstractValidator {
         int midX = startX + deltaX/2;
         int midY = startY + deltaY/2;
         int direction = playerMark == Color.White ? -1 : 1;
-        // Check is correct direction
+        // Check correct direction
         if(deltaX / Math.abs(deltaX) != direction) {
             return new Pair<>(0,"Not correct direction of move");
         }

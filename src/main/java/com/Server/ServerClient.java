@@ -8,6 +8,11 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 
 public class ServerClient {
+    /**
+     * Main server client class
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
         System.out.println("""
@@ -24,7 +29,7 @@ public class ServerClient {
                 System.out.println("Not correct type");
             }
         }
-        // Set connection and make pairs of players
+        // Set connection and make a pair of players
         try (var listener = new ServerSocket(58901)) {
             System.out.println("Checkers Server is Running...");
             var pool = Executors.newFixedThreadPool(200);

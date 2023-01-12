@@ -20,7 +20,7 @@ public class Game {
     public Game(){}
 
     /**
-     * Constructor for set game type and size of field
+     * Constructor to set a game type and size of a field
      * @param type
      * @param size
      */
@@ -42,7 +42,10 @@ public class Game {
             validator = new ValidatorStandart();
         }
     }
-
+    /**
+     * Inner class to check the player's state,
+     * to handle player's moves and to print different data
+     */
     class Player implements Runnable{
         private Color mark;
         Player opponent;
@@ -50,7 +53,6 @@ public class Game {
         Scanner input;
         PrintWriter output;
         Move lastMyMove;
-
         /**
          * Constructor to create new players
          * @param socket
@@ -60,11 +62,11 @@ public class Game {
             this.socket = socket;
             this.mark = mark;
         }
-
         /**
-         * Method that call validation of moves, and do different things depending on responses
+         * Method that calls validator in order to perform
+         * different behavior of a piece.
          * @param move
-         * @return false if we need to pass turn to another player, return true if current player must make one more move
+         * @return false if we need to pass turn to another player, return true if current player must make one or more moves
          */
         public boolean moveValidation(Move move) {
             Pair<Integer, String> typeWithMessage = validator.isValidMove(board, move, lastMyMove, mark);
@@ -74,7 +76,7 @@ public class Game {
             if (typeOfMove == 2) {
                 validator.makeMove(board, move);
                 lastMyMove = move;
-                // Check is there any more move with capture
+                // Check if there are any more moves with capture
                 if(validator.checkForNextMove(board, lastMyMove.getEndX(), lastMyMove.getEndY())) {
                     output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
                     return false;
@@ -89,15 +91,15 @@ public class Game {
                 output.println("VALID_MOVE WAIT " + board.boardToString());
                 return true;
             }
-            // Not valid move
+            // invalid move
             board.printBoard();
             output.println("NOT_VALID_MOVE " + board.boardToString());
             output.println("MESSAGE " + typeWithMessage.getValue());
             return false;
         }
-
         /**
-         * Method to run setup and processing commands from player
+         * Method run is responsible for linking a player with
+         * thread and connects to server
          */
         @Override
         public void run() {
@@ -116,10 +118,8 @@ public class Game {
                 }
             }
         }
-
         /**
-         * Method to setup input and output tools
-         * and make first responses to player
+         * Method sets input and output channels for players
          * @throws IOException
          */
         private void setup() throws IOException {
@@ -145,7 +145,6 @@ public class Game {
                 }
             }
         }
-
         /**
          * Method to handle commands from player
          */
@@ -159,10 +158,8 @@ public class Game {
                 }
             }
         }
-
         /**
-         * Calls validation of move
-         * Send messages to players
+         * Handles player's move
          * @param move
          */
         private void processMoveCommand(String move) {
