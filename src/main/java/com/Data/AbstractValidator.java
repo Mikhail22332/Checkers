@@ -251,6 +251,37 @@ public abstract class AbstractValidator {
         return isPlayerHasAnyMoves(board, playerColor);
     }
     /**
+     * Check is there at least one possible move for opponent
+     * @param board
+     * @param playerColor
+     * @return true if there is at least one possible move, false if there is no possible moves
+     */
+    private boolean isPlayerHasAnyMoves(Board board, Color playerColor) {
+        for(int i = 0; i < board.getSize(); i++) {
+            for(int j = 0; j < board.getSize(); j++) {
+                int startX = i;
+                int startY = j;
+                for(int directionX = -1; directionX <= 1; directionX += 2) {
+                    for(int directionY = -1; directionY <= 1; directionY += 2) {
+                        int endX = startX;
+                        int endY = startY;
+                        while(!outOfBounds(board, endX + directionX, endY + directionY)) {
+                            endX += directionX;
+                            endY += directionY;
+                            if(isAnyCaptureForThatField(board, startX, startY)) {
+                                return true;
+                            }
+                            if(isValidMove(board, new Move(startX, startY, endX, endY), null, playerColor).getKey() != 0) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    /**
      * Check Is the player a winner
      * @param board
      * @param playerColor
@@ -258,9 +289,6 @@ public abstract class AbstractValidator {
      */
     public boolean isWinner(Board board, Color playerColor){
         return !isAnyOpponentPiecesOnBoard(board, playerColor);
-    }
-    public boolean isTie() {
-        return moveCounter > 50 ? true : false;
     }
     /**
      * Check is there is any opponent pieces on board
@@ -285,32 +313,7 @@ public abstract class AbstractValidator {
         }
         return flag;
     }
-    /**
-     * Check is there at least one possible move for opponent
-     * @param board
-     * @param playerColor
-     * @return true if there is at least one possible move, false if there is no possible moves
-     */
-    private boolean isPlayerHasAnyMoves(Board board, Color playerColor) {
-        for(int i = 0; i < board.getSize(); i++) {
-            for(int j = 0; j < board.getSize(); j++) {
-                int startX = i;
-                int startY = j;
-                for(int directionX = -1; directionX <= 1; directionX += 2) {
-                    for(int directionY = -1; directionY <= 1; directionY += 2) {
-                        int endX = startX;
-                        int endY = startY;
-                        while(!outOfBounds(board, endX + directionX, endY + directionY)) {
-                            endX += directionX;
-                            endY += directionY;
-                            if(isValidMove(board, new Move(startX, startY, endX, endY), null, playerColor).getKey() != 0) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return false;
+    public boolean isTie() {
+        return moveCounter > 50 ? true : false;
     }
 }
