@@ -49,6 +49,10 @@ public abstract class AbstractValidator {
         }
         return new Pair<>(0, "Error");
     }
+    // Return 0 - impossible move, 1 - simple move, 2 - move with capture
+    public int isValidMoveTest(Board board, Move move, Move lastMove, Color playerMark) {
+        return isValidMove(board,move, lastMove, playerMark).getKey();
+    }
     // Check is valid move, if that piece was a pawn
     protected Pair<Integer, String> validPawnMove(Board board, Move move) {return new Pair<>(0,"");}
     // Check is valid move, if that piece was a queen

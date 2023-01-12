@@ -15,7 +15,7 @@ public class isValidMovePawn {
         validator.setPlayerMark(Color.White);
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 2);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 3);
-        Assertions.assertEquals(0, validator.isValidMove(board, new Move(5,2,4,3), null, Color.White));
+        Assertions.assertEquals(0, validator.isValidMoveTest(board, new Move(5,2,4,3), null, Color.White));
     }
     //pawn move to empty cell
     @Test
@@ -24,7 +24,7 @@ public class isValidMovePawn {
         AbstractValidator validator = new ValidatorEnglish();
         validator.setPlayerMark(Color.Black);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 1);
-        Assertions.assertEquals(1, validator.isValidMove(board, new Move(2,1,3,2), null, Color.Black));
+        Assertions.assertEquals(1, validator.isValidMoveTest(board, new Move(2,1,3,2), null, Color.Black));
     }
     //pawn move back
     @Test
@@ -33,7 +33,7 @@ public class isValidMovePawn {
         AbstractValidator validator = new ValidatorEnglish();
         validator.setPlayerMark(Color.Black);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 1);
-        Assertions.assertEquals(0, validator.isValidMove(board, new Move(2,1,1,0), null, Color.Black));
+        Assertions.assertEquals(0, validator.isValidMoveTest(board, new Move(2,1,1,0), null, Color.Black));
     }
     //pawn move 2 cells
     @Test
@@ -42,7 +42,7 @@ public class isValidMovePawn {
         AbstractValidator validator = new ValidatorEnglish();
         validator.setPlayerMark(Color.White);
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 5);
-        Assertions.assertEquals(0, validator.isValidMove(board, new Move(5,5,3,3), null, Color.Black));
+        Assertions.assertEquals(0, validator.isValidMoveTest(board, new Move(5,5,3,3), null, Color.Black));
     }
     //move enemy's pawn
     @Test
@@ -51,7 +51,7 @@ public class isValidMovePawn {
         AbstractValidator validator = new ValidatorEnglish();
         validator.setPlayerMark(Color.White);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 5);
-        Assertions.assertEquals(0, validator.isValidMove(board, new Move(5,5,4,4), null, Color.Black));
+        Assertions.assertEquals(0, validator.isValidMoveTest(board, new Move(5,5,4,4), null, Color.Black));
     }
 }
 
