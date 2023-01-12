@@ -34,7 +34,7 @@ public class ValidatorEnglish extends AbstractValidator {
             // Check piece which will be captured
             if(board.getField(midX,midY).getPieceColor() != playerMark && board.getField(midX,midY).getPieceType() != (PieceType.Blank)){
                 moveCounter = 0;
-                board.setField(new Piece(PieceType.Blank, Color.NoColor), midX, midY);
+                //board.setField(new Piece(PieceType.Blank, Color.NoColor), midX, midY);
                 return new Pair<>(2,"Valid move with capture");
             }
             return new Pair<>(0,"Not correct checker try to be captured");
@@ -98,7 +98,7 @@ public class ValidatorEnglish extends AbstractValidator {
         if (isPassingEnemy) {
             System.out.println("Enemy was killed at " + enemyX + " " + enemyY);
             moveCounter = 0;
-            board.setField(new Piece(PieceType.Blank, Color.NoColor), enemyX, enemyY);
+            //board.setField(new Piece(PieceType.Blank, Color.NoColor), enemyX, enemyY);
             return new Pair<>(2, "Valid move with capture");
         }
         if(isAnyCapture || isLastMoveCapture) {

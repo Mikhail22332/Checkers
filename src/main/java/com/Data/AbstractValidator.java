@@ -101,8 +101,15 @@ public abstract class AbstractValidator {
         if(checkPromotion(current, board.getSize(), x2)){
             current.setPieceType(PieceType.Queen);
         }
-        board.setField(current,x2,y2);
         board.setField(new Piece(PieceType.Blank, Color.NoColor),x1,y1);
+        int directionX = (x2-x1) / Math.abs(x2-x1);
+        int directionY = (y2-y1) / Math.abs(y2-y1);
+        while(x1 != x2 && y1 != y2) {
+            x1 += directionX;
+            y1 += directionY;
+            board.setField(new Piece(PieceType.Blank, Color.NoColor),x1,y1);
+        }
+        board.setField(current,x2,y2);
         System.out.println("Board after move");
         board.printBoard();
     }
@@ -268,9 +275,9 @@ public abstract class AbstractValidator {
                         while(!outOfBounds(board, endX + directionX, endY + directionY)) {
                             endX += directionX;
                             endY += directionY;
-                            if(isAnyCaptureForThatField(board, startX, startY)) {
-                                return true;
-                            }
+                            //if(isAnyCaptureForThatField(board, startX, startY)) {
+                            //    return true;
+                            //}
                             if(isValidMove(board, new Move(startX, startY, endX, endY), null, playerColor).getKey() != 0) {
                                 return true;
                             }
