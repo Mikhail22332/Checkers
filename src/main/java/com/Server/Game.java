@@ -18,6 +18,12 @@ public class Game {
     Player currentPlayer;
     GameType currentType;
     public Game(){}
+
+    /**
+     * Constructor for set game type and size of field
+     * @param type
+     * @param size
+     */
     public Game(GameType type, int size){
         currentType = type;
         if(type == GameType.Russian){
@@ -45,13 +51,24 @@ public class Game {
         PrintWriter output;
         Move lastMyMove;
 
+        /**
+         * Constructor to create new players
+         * @param socket
+         * @param mark
+         */
         public Player(Socket socket, Color mark){
             this.socket = socket;
             this.mark = mark;
         }
-        // 0 - impossible move, 1 - simple move, 2 - move with capture
+
+        /**
+         * Method that call validation of moves, and do different things depending on responses
+         * @param move
+         * @return false if we need to pass turn to another player, return true if current player must make one more move
+         */
         public boolean moveValidation(Move move) {
             Pair<Integer, String> typeWithMessage = validator.isValidMove(board, move, lastMyMove, mark);
+            // 0 - impossible move, 1 - simple move, 2 - move with capture
             int typeOfMove = typeWithMessage.getKey();
             // Move with capture
             if (typeOfMove == 2) {
@@ -78,6 +95,10 @@ public class Game {
             output.println("MESSAGE " + typeWithMessage.getValue());
             return false;
         }
+
+        /**
+         * Method to run setup and processing commands from player
+         */
         @Override
         public void run() {
             try {
@@ -95,6 +116,12 @@ public class Game {
                 }
             }
         }
+
+        /**
+         * Method to setup input and output tools
+         * and make first responses to player
+         * @throws IOException
+         */
         private void setup() throws IOException {
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
@@ -118,6 +145,10 @@ public class Game {
                 }
             }
         }
+
+        /**
+         * Method to handle commands from player
+         */
         private void processCommands(){
             while (input.hasNextLine()) {
                 var command = input.nextLine();
@@ -128,6 +159,12 @@ public class Game {
                 }
             }
         }
+
+        /**
+         * Calls validation of move
+         * Send messages to players
+         * @param move
+         */
         private void processMoveCommand(String move) {
             try {
                 System.out.println(move);
@@ -137,11 +174,14 @@ public class Game {
                 currentPlayer = currentPlayer.opponent;
                 opponent.output.println("OPPONENT_MOVED " + board.boardToString());
                 checkStateOfGame();
-
             } catch (IllegalStateException e) {
                 output.println("MESSAGE " + e.getMessage());
             }
         }
+
+        /**
+         * Method to check the state of the game
+         */
         private void checkStateOfGame() {
             if(!validator.isPlayerHasAtLeastOneMove(board, mark)) {
                 output.println("DEFEAT, you don't have possible moves");

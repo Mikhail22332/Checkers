@@ -8,7 +8,7 @@ class Square extends javafx.scene.control.Control {
     private static Pawn selectedPawn;
 
     /**
-     *
+     * Constructor
      * @param row
      * @param col
      */
@@ -72,7 +72,7 @@ class Square extends javafx.scene.control.Control {
     }
 
     /**
-     *
+     * Set size for square
      * @param size
      */
     public void setSize(double size) {
@@ -82,7 +82,7 @@ class Square extends javafx.scene.control.Control {
     }
 
     /**
-     *
+     * Method to set new position for selected pawn and clear squares
      */
     private void makeMove(){
         ClientApplication.getSquare(selectedPawn.getRow(), selectedPawn.getCol()).setPawn(null);
@@ -95,7 +95,7 @@ class Square extends javafx.scene.control.Control {
     }
 
     /**
-     *
+     * Method to set pawn for that square
      * @param pawn
      */
     public void setPawn(Pawn pawn) {
@@ -107,7 +107,7 @@ class Square extends javafx.scene.control.Control {
     }
 
     /**
-     *
+     * Get pawn, which places at that square
      * @return
      */
     public Pawn getPawn() {

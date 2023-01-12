@@ -7,9 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-/**
- *
- */
 public class ClientNetwork {
     private static Socket socket;
     public static Scanner input;
@@ -19,9 +16,14 @@ public class ClientNetwork {
 
     public ClientNetwork() {}
 
+    /**
+     * Method for player, Is it his turn?
+     * @return boolean
+     */
     public static boolean IsYourMove() {return isYourMove;}
 
     /**
+     * Method for make connection with server
      * @param ip
      * @throws IOException
      */
@@ -33,6 +35,7 @@ public class ClientNetwork {
     }
 
     /**
+     * Method to disconnect from server
      * @throws IOException
      */
     public static void disconnectFromServer() throws IOException {
@@ -42,6 +45,7 @@ public class ClientNetwork {
     }
 
     /**
+     * Method to get response from server
      * @throws Exception
      */
     public void getResponse() throws Exception {
@@ -111,6 +115,7 @@ public class ClientNetwork {
     }
 
     /**
+     * Method that call updating of board at application
      * @param board
      */
     private void updateBoard(String board) {
@@ -119,6 +124,7 @@ public class ClientNetwork {
     }
 
     /**
+     * Method to send a completed move to server
      * @param move
      * @throws Exception
      */
@@ -127,6 +133,11 @@ public class ClientNetwork {
         output.println(move);
         System.out.println("Sending move");
     }
+
+    /**
+     * Method to call Alert with message at application
+     * @param message
+     */
     private void sendAlert(String message) {
         String finalResponse = message;
         Platform.runLater(() -> ClientApplication.printAlert(finalResponse));

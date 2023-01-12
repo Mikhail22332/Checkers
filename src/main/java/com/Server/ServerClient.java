@@ -10,16 +10,13 @@ import java.util.concurrent.Executors;
 public class ServerClient {
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
-        /*System.out.println("Enter server port: ");
-        int port = 00000;
-        port = sc.nextInt();*/
         System.out.println("""
                         Choose one type of game (write a number):
                         1 - Russian checkers / Szaszki
                         2 - English checkers
-                        3 - Polish checkers
-                        """);
+                        3 - Polish checkers""");
         int type = 0;
+        // Get type from host
         while (type <= 0 || 4 <= type) {
             try {
                 type = Integer.parseInt(sc.nextLine());
@@ -27,6 +24,7 @@ public class ServerClient {
                 System.out.println("Not correct type");
             }
         }
+        // Set connection and make pairs of players
         try (var listener = new ServerSocket(58901)) {
             System.out.println("Checkers Server is Running...");
             var pool = Executors.newFixedThreadPool(200);

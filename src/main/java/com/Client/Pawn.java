@@ -2,9 +2,6 @@ package com.Client;
 
 import javafx.scene.paint.Color;
 
-/**
- *
- */
 class Pawn extends javafx.scene.shape.Circle {
 
     private int row;
@@ -45,6 +42,7 @@ class Pawn extends javafx.scene.shape.Circle {
     }
 
     /**
+     * Check field is same diagonal as that pawn
      * @param row
      * @param col
      * @return
@@ -57,11 +55,16 @@ class Pawn extends javafx.scene.shape.Circle {
         return true;
     }
 
+    /**
+     * return is selected that pawn
+     * @return
+     */
     public boolean isSelected() {
         return selected;
     }
 
     /**
+     * set this pawn as selected
      * @param selected
      */
     public void setSelected(boolean selected) {
@@ -73,6 +76,7 @@ class Pawn extends javafx.scene.shape.Circle {
     }
 
     /**
+     * setter for row
      * @param row
      */
     public void setRow(int row) {
@@ -80,7 +84,7 @@ class Pawn extends javafx.scene.shape.Circle {
     }
 
     /**
-     *
+     * setter for column
      * @param col
      */
     public void setCol(int col) {
@@ -88,19 +92,19 @@ class Pawn extends javafx.scene.shape.Circle {
     }
 
     /**
-     *
+     * getter for row
      * @return
      */
     public int getRow() { return row; }
 
     /**
-     *
+     * getter for column
      * @return
      */
     public int getCol() { return col; }
 
     /**
-     *
+     * Method to make promotion for pawn
      */
     public void makeQueen() {
         this.isQueen = true;
@@ -109,13 +113,13 @@ class Pawn extends javafx.scene.shape.Circle {
     }
 
     /**
-     *
+     * Method to set color for piece
      * @param color
      */
     public void setColor(Color color) { this.color = color; setFill(color); }
 
     /**
-     *
+     * Method to set size for piece
      * @param size
      */
     public void setSize(double size){

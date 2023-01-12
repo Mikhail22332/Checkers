@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class ClientApplication extends Application {
-    public static Square[][] squares;
+    private static Square[][] squares;
 
     public static ClientNetwork myNetwork = new ClientNetwork();
 
@@ -28,7 +28,7 @@ public class ClientApplication extends Application {
     private static GridPane root;
 
     /**
-     *
+     * Setter of size of board
      * @param newSize
      */
     public static void setSize(int newSize) {
@@ -37,7 +37,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     *
+     * Creating application with adding additional thread for getting responses from server
      * @param primaryStage
      */
     @Override
@@ -51,6 +51,7 @@ public class ClientApplication extends Application {
         Label enterIp = new Label("enter ip");
         GridPane.setHalignment(enterIp, HPos.CENTER);
         root.add(enterIp, size + 1, 0);
+
         TextField tf1 = new TextField("localhost");
         GridPane.setHalignment(tf1, HPos.CENTER);
         root.add(tf1, size + 1, 1);
@@ -90,25 +91,21 @@ public class ClientApplication extends Application {
         });
         root.add(startGame,size + 1,3);
 
-
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    // Fill gridPane with squares
     /**
-     *
+     * Method to clear grid, but save some buttons, labels and texts
      * @param root
      */
-    private static void addSquares(GridPane root) {
-        squares = new Square[size][size];
-
-        System.out.println("Try to update field");
+    private static void clearGrid(GridPane root) {
         Label enterIp = new Label();
         TextField tf1 = new TextField();
         Button connect = new Button();
         Button startGame = new Button();
+
         for(Node node : root.getChildren()){
             if(node.getClass() == new Label().getClass()) {
                 enterIp = (Label) node;
@@ -126,12 +123,22 @@ public class ClientApplication extends Application {
                 }
             }
         }
+
         root.getChildren().clear();
+
         root.add(enterIp, size, 0);
         root.add(tf1, size, 1);
         root.add(connect, size, 2);
         root.add(startGame, size, 3);
+    }
 
+    /**
+     * Filling gridPane with squares
+     * @param root
+     */
+    private static void addSquares(GridPane root) {
+        squares = new Square[size][size];
+        clearGrid(root);
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 // Create a new square and add it to the grid
@@ -150,9 +157,8 @@ public class ClientApplication extends Application {
         updateSquareSizes(root.getWidth(), root.getHeight());
     }
 
-    // Method to update board
     /**
-     *
+     * Method to update board after getting response
      * @param s
      */
     public static void updateSquares(String[] s) {
@@ -182,7 +188,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     *
+     * Method to update size of each square
      * @param width
      * @param height
      */
@@ -200,14 +206,19 @@ public class ClientApplication extends Application {
     }
 
     /**
-     *
+     * Getter of field from board
      * @param row
      * @param col
-     * @return
+     * @return Square
      */
     public static Square getSquare(int row, int col) {
         return squares[row][col];
     }
+
+    /**
+     * Method to print different alerts
+     * @param message
+     */
     public static void printAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Info");
@@ -217,7 +228,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     *
+     * Main method, which launch application
      * @param args
      */
     public static void main(String[] args)  {
