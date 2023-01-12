@@ -56,12 +56,14 @@ public class ClientNetwork {
                         response = response.substring(10);
                         updateBoard(response);
                         System.out.println("Your turn one more");
+                        sendAlert("Your turn, one more");
                         isYourMove = true;
                     }
                     if(response.startsWith("WAIT")) {
                         response = response.substring(5);
                         updateBoard(response);
                         System.out.println("Valid move, please wait");
+                        sendAlert("Valid move, please wait");
                         isYourMove = false;
                     }
                 }
@@ -79,7 +81,7 @@ public class ClientNetwork {
                 }
                 else if (response.startsWith("MESSAGE")) {
                     response = response.substring(8);
-                    System.out.println(response);
+                    sendAlert(response);
                     if(response.startsWith("YOUR MOVE"))
                     {
                         isYourMove = true;
@@ -92,21 +94,16 @@ public class ClientNetwork {
                     }
                 }
                 else if (response.startsWith("VICTORY")) {
-                    System.out.println("Winner Winner");
-                    //ToDo some gui to show that info to player
+                    sendAlert(response);
                 }
                 else if (response.startsWith("DEFEAT")) {
-                    System.out.println("Sorry you lost");
-                    //ToDo some gui to show that info to player
+                    sendAlert(response);
                 } else if (response.startsWith("TIE")) {
-                    System.out.println("Tie");
-                    //ToDo some gui to show that info to player
+                    sendAlert(response);
                 }
                 else if (response.startsWith("OTHER_PLAYER_LEFT")) {
-                    System.out.println("Other player left");
-                    //ToDo some gui to show that info to player
+                    sendAlert(response);
                 }
-                System.out.println("TryToGetResponse");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,5 +126,9 @@ public class ClientNetwork {
         System.out.println(move);
         output.println(move);
         System.out.println("Sending move");
+    }
+    private void sendAlert(String message) {
+        String finalResponse = message;
+        Platform.runLater(() -> ClientApplication.printAlert(finalResponse));
     }
 }

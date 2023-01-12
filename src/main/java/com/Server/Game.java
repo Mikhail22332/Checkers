@@ -4,6 +4,7 @@ import com.Data.*;
 import com.Data.English.ValidatorEnglish;
 import com.Data.Standart.ValidatorStandart;
 import com.Data.Standart.FactoryBoardStandart;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,17 +22,17 @@ public class Game {
         currentType = type;
         if(type == GameType.Russian){
             factoryBoard = new FactoryBoardStandart();
-            board = factoryBoard.сreateBoard(size);
+            board = factoryBoard.createBoard(size);
             validator = new ValidatorStandart();
         }
         if(type == GameType.English) {
             factoryBoard = new FactoryBoardStandart();
-            board = factoryBoard.сreateBoard(size);
+            board = factoryBoard.createBoard(size);
             validator = new ValidatorEnglish();
         }
         if(type == GameType.Polish) {
             factoryBoard = new FactoryBoardStandart();
-            board = factoryBoard.сreateBoard(size);
+            board = factoryBoard.createBoard(size);
             validator = new ValidatorStandart();
         }
     }
@@ -49,9 +50,9 @@ public class Game {
             this.mark = mark;
         }
         // 0 - impossible move, 1 - simple move, 2 - move with capture
-        public boolean moveValidation(Move move){
-            int typeOfMove = validator.isValidMove(board, move, lastMyMove, mark);
-            System.out.println(typeOfMove);
+        public boolean moveValidation(Move move) {
+            Pair<Integer, String> typeWithMessage = validator.isValidMove(board, move, lastMyMove, mark);
+            int typeOfMove = typeWithMessage.getKey();
             // Move with capture
             if (typeOfMove == 2) {
                 validator.makeMove(board, move);
@@ -74,6 +75,7 @@ public class Game {
             // Not valid move
             board.printBoard();
             output.println("NOT_VALID_MOVE " + board.boardToString());
+            output.println("MESSAGE " + typeWithMessage.getValue());
             return false;
         }
         @Override
@@ -131,14 +133,27 @@ public class Game {
                 System.out.println(move);
                 if(!moveValidation(Move.StringToMove(move))) {return;}
                 lastMyMove = null;
+                checkStateOfGame();
                 currentPlayer = currentPlayer.opponent;
                 opponent.output.println("OPPONENT_MOVED " + board.boardToString());
-                if (validator.isWinner(board, mark)) {
-                    output.println("VICTORY");
-                    opponent.output.println("DEFEAT");
-                }
+                checkStateOfGame();
+
             } catch (IllegalStateException e) {
                 output.println("MESSAGE " + e.getMessage());
+            }
+        }
+        private void checkStateOfGame() {
+            if(!validator.isPlayerHasAtLeastOneMove(board, mark)) {
+                output.println("DEFEAT, you don't have possible moves");
+                opponent.output.println("VICTORY, opponent doesn't have possible moves");
+            }
+            if (validator.isTie()) {
+                output.println("TIE");
+                opponent.output.println("TIE");
+            }
+            if (validator.isWinner(board, mark)) {
+                output.println("VICTORY, you kill all enemy pieces");
+                opponent.output.println("DEFEAT, you don't have any pieces");
             }
         }
     }

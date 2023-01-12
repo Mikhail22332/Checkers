@@ -1,6 +1,7 @@
 package com.Data.English;
 
 import com.Data.*;
+import javafx.util.Pair;
 
 /**
  * ValidatorEnglish class inherits from abstract class AbstractValidator.
@@ -14,7 +15,7 @@ public class ValidatorEnglish extends AbstractValidator {
      * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
      */
     @Override
-    protected int validPawnMove(Board board, Move move){
+    protected Pair<Integer, String> validPawnMove(Board board, Move move){
         int startX = move.getX1();
         int startY = move.getY1();
         int endX = move.getX2();
@@ -26,32 +27,27 @@ public class ValidatorEnglish extends AbstractValidator {
         int direction = playerMark == Color.White ? -1 : 1;
         // Check is correct direction
         if(deltaX / Math.abs(deltaX) != direction) {
-            System.out.println("Not correct direction");
-            return 0;
+            return new Pair<>(0,"Not correct direction of move");
         }
         // Check move with capture
         if(Math.abs(deltaX) == 2 && Math.abs(deltaY) == 2){
             // Check piece which will be captured
             if(board.getField(midX,midY).getPieceColor() != playerMark && board.getField(midX,midY).getPieceType() != (PieceType.Blank)){
+                moveCounter = 0;
                 board.setField(new Piece(PieceType.Blank, Color.NoColor), midX, midY);
-                System.out.println("Move with capture");
-                return 2;
+                return new Pair<>(2,"Valid move with capture");
             }
-            System.out.println("Not correct checker try to be captured");
-            return 0;
+            return new Pair<>(0,"Not correct checker try to be captured");
         }
         // You must capture
         if(isAnyCapture || isLastMoveCapture) {
-            System.out.println("You must capture enemy piece");
-            return 0;
+            return new Pair<>(0,"You must capture enemy piece");
         }
         // Check move without capture
         if(Math.abs(deltaX) == 1 && Math.abs(deltaY) == 1){
-            System.out.println("Good simple move");
-            return 1;
+            return new Pair<>(1,"Good simple move");
         }
-        System.out.println("Not correct");
-        return 0;
+        return new Pair<>(0,"Not correct move / Error");
     }
 
     /**
@@ -61,7 +57,7 @@ public class ValidatorEnglish extends AbstractValidator {
      * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
      */
     @Override
-    protected int validQueenMove(Board board, Move move){
+    protected Pair<Integer, String> validQueenMove(Board board, Move move){
         int startX = move.getX1();
         int startY = move.getY1();
         int endX = move.getX2();
@@ -87,29 +83,28 @@ public class ValidatorEnglish extends AbstractValidator {
                 enemyX = i;
                 enemyY = j;
                 if(i + directionX != endX || j + directionY != endY) {
-                    return 0;
+                    return new Pair<>(0,"You must finish your move at field next to beat enemy cheker");
                 }
             }
             // Check if there is more than one enemy piece between start and end
             else if (board.getField(i, j).getPieceColor() != playerMark && isPassingEnemy) {
-                return 0;
+                return new Pair<>(0,"You try to beat more than one enemy");
             }
             // Check if there is at least one allies piece between start and end
             else if (board.getField(i, j).getPieceColor() == playerMark) {
-                return 0;
+                return new Pair<>(0,"You try to beat allied  checker");
             }
         }
         if (isPassingEnemy) {
             System.out.println("Enemy was killed at " + enemyX + " " + enemyY);
+            moveCounter = 0;
             board.setField(new Piece(PieceType.Blank, Color.NoColor), enemyX, enemyY);
-            return 2;
+            return new Pair<>(2, "Valid move with capture");
         }
         if(isAnyCapture || isLastMoveCapture) {
-            System.out.println("You must capture enemy piece");
-            return 0;
+            return new Pair<>(0,"You must capture enemy piece");
         }
-        System.out.println("Queen move is valid");
-        return 1;
+        return new Pair<>(1,"Queen move is valid");
     }
 
     /**

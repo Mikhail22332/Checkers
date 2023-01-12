@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -41,8 +42,6 @@ public class ClientApplication extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        //ToDo try to find a better way to resize squares and lock min size of grid
-        // root.setMinSize(300, 300);
         root = new GridPane();
         root.setPrefSize(600, 600);
         // Add a listener to the width and height properties of the scene
@@ -96,8 +95,8 @@ public class ClientApplication extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    // Fill gridPane with squares
 
+    // Fill gridPane with squares
     /**
      *
      * @param root
@@ -128,7 +127,6 @@ public class ClientApplication extends Application {
             }
         }
         root.getChildren().clear();
-        System.out.println("was cleared");
         root.add(enterIp, size, 0);
         root.add(tf1, size, 1);
         root.add(connect, size, 2);
@@ -151,8 +149,8 @@ public class ClientApplication extends Application {
         }
         updateSquareSizes(root.getWidth(), root.getHeight());
     }
-    // Method to update board
 
+    // Method to update board
     /**
      *
      * @param s
@@ -210,6 +208,13 @@ public class ClientApplication extends Application {
     public static Square getSquare(int row, int col) {
         return squares[row][col];
     }
+    public static void printAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText("Info");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     /**
      *
@@ -218,6 +223,5 @@ public class ClientApplication extends Application {
     public static void main(String[] args)  {
         launch(args);
     }
-
 }
 

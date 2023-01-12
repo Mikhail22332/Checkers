@@ -15,7 +15,7 @@ public class FactoryBoardStandart extends AbstractFactory {
      * @return
      */
     @Override
-    public Board сreateBoard(int size) {
+    public Board createBoard(int size) {
         if(size == 8)
             return createBoard8x8();
         if(size == 10)

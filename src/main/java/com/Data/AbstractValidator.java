@@ -1,5 +1,7 @@
 package com.Data;
 
+import javafx.util.Pair;
+
 public abstract class AbstractValidator {
     protected Color playerMark = Color.NoColor;
     public void setPlayerMark(Color playerMark) {
@@ -7,9 +9,10 @@ public abstract class AbstractValidator {
     }
     protected boolean isAnyCapture = false;
     protected boolean isLastMoveCapture = false;
+    protected int moveCounter = 0;
     public boolean checkForNextMove(Board board, int startX, int startY) {return isAnyCaptureForThatField(board, startX, startY);}
     // Return 0 - impossible move, 1 - simple move, 2 - move with capture
-    public int isValidMove(Board board, Move move, Move lastMove, Color playerMark) {
+    public Pair<Integer, String> isValidMove(Board board, Move move, Move lastMove, Color playerMark) {
         this.playerMark = playerMark;
 
         int startX = move.getX1();
@@ -23,8 +26,7 @@ public abstract class AbstractValidator {
             int lastY = lastMove.getY2();
             isLastMoveCapture = true;
             if(startX != lastX || startY != lastY) {
-                System.out.println("You can move only one piece, which made capture");
-                return 0;
+                return new Pair<>(0, "You can move only one piece, which made capture");
             }
         }
 
@@ -32,31 +34,28 @@ public abstract class AbstractValidator {
 
         Piece pieceAtEnd = board.getField(endX, endY);
         if(movingPiece.getPieceColor() != playerMark) {
-            System.out.println("Not your checker");
-            return 0;
+            return new Pair<>(0, "Not your checker");
         }
         if(pieceAtEnd.getPieceType() != PieceType.Blank){
-            System.out.println("You can't move a piece to the occupied cell.");
-            return 0;
+            return new Pair<>(0, "You can't move a piece to the occupied cell");
         }
         this.isAnyCapture = findAllPossibleCaptures(board);
         if(movingPiece.getPieceType() == PieceType.Pawn){
-            System.out.println("Check pawn move");
             return validPawnMove(board, move);
         }
 
         if(movingPiece.getPieceType() == PieceType.Queen){
-            System.out.println("Check queen move");
             return validQueenMove(board, move);
         }
-        return 0;
+        return new Pair<>(0, "Error");
     }
     // Check is valid move, if that piece was a pawn
-    protected int validPawnMove(Board board, Move move) {return 0;}
+    protected Pair<Integer, String> validPawnMove(Board board, Move move) {return new Pair<>(0,"");}
     // Check is valid move, if that piece was a queen
-    protected int validQueenMove(Board board, Move move) {return 0;}
+    protected Pair<Integer, String> validQueenMove(Board board, Move move) {return new Pair<>(0,"");}
     // Release a move
     public void makeMove(Board board, Move move) {
+        moveCounter++;
         int x1 = move.getX1();
         int y1 = move.getY1();
         int x2 = move.getX2();
@@ -171,49 +170,70 @@ public abstract class AbstractValidator {
         }
         return false;
     }
-
-
-    // Check to win
+    public boolean isPlayerHasAtLeastOneMove(Board board, Color playerColor) {
+        return isPlayerHasAnyMoves(board, playerColor);
+    }
+    /**
+     * Check Is the player a winner
+     * @param board
+     * @param playerColor
+     * @return true if player is a winner, else false
+     */
     public boolean isWinner(Board board, Color playerColor){
-        if(playerColor == Color.Black)
-            return isBlackWin(board);
-        else if(playerColor == Color.White)
-            return isWhiteWin(board);
-        else
-            return false;
+        return !isAnyOpponentPiecesOnBoard(board, playerColor);
     }
-    // Check white is winning
-    private boolean isWhiteWin(Board board){
-        boolean flag = true;
+    public boolean isTie() {
+        return moveCounter > 50 ? true : false;
+    }
+    /**
+     * Check is there is any opponent pieces on board
+     * @param board
+     * @param playerColor
+     * @return true if there is at least one enemy piece, false if there is no enemy pieces
+     */
+    private boolean isAnyOpponentPiecesOnBoard(Board board, Color playerColor){
+        boolean flag = false;
         for(int i = 0; i < board.getSize(); i++){
             for(int j = 0; j < board.getSize(); j++){
                 Piece pieceAtField = board.getField(i,j);
-
-                if(pieceAtField.getPieceColor() == Color.Black){
-                    flag = false;
+                if(pieceAtField.getPieceColor() == Color.NoColor)
+                    continue;
+                if(pieceAtField.getPieceColor() != playerColor){
+                    flag = true;
                     break;
                 }
             }
-            if(!flag)
+            if(flag)
                 break;
         }
         return flag;
     }
-    // Check black is winning
-    private boolean isBlackWin(Board board){
-        boolean flag = true;
-        for(int i = 0; i < board.getSize(); i++){
-            for(int j = 0; j < board.getSize(); j++){
-                Piece pieceAtField = board.getField(i,j);
-
-                if(pieceAtField.getPieceColor() == Color.White){
-                    flag = false;
-                    break;
+    /**
+     * Check is there at least one possible move for opponent
+     * @param board
+     * @param playerColor
+     * @return true if there is at least one possible move, false if there is no possible moves
+     */
+    private boolean isPlayerHasAnyMoves(Board board, Color playerColor) {
+        for(int i = 0; i < board.getSize(); i++) {
+            for(int j = 0; j < board.getSize(); j++) {
+                int startX = i;
+                int startY = j;
+                for(int directionX = -1; directionX <= 1; directionX += 2) {
+                    for(int directionY = -1; directionY <= 1; directionY += 2) {
+                        int endX = startX;
+                        int endY = startY;
+                        while(!outOfBounds(board, endX + directionX, endY + directionY)) {
+                            endX += directionX;
+                            endY += directionY;
+                            if(isValidMove(board, new Move(startX, startY, endX, endY), null, playerColor).getKey() != 0) {
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
-            if(!flag)
-                break;
         }
-        return flag;
+        return false;
     }
 }
