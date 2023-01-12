@@ -14,7 +14,7 @@ class AbstractValidatorTest {
         AbstractValidator validator = new ValidatorStandart();
         board.setField(new Piece(PieceType.Pawn, Color.White), 0,0);
         board.printBoard();
-        Assertions.assertEquals(2, validator.isWinner(board, Color.White));
+        Assertions.assertEquals(true, validator.isWinner(board, Color.White));
     }
     @Test
     void isWinner2() {
@@ -23,7 +23,7 @@ class AbstractValidatorTest {
         board.setField(new Piece(PieceType.Pawn, Color.White), 0,0);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2,0);
         board.printBoard();
-        Assertions.assertEquals(0, validator.isWinner(board, Color.White));
+        Assertions.assertEquals(false, validator.isWinner(board, Color.White));
     }
     @Test
     void isWinner3() {
@@ -33,6 +33,6 @@ class AbstractValidatorTest {
         board.setField(new Piece(PieceType.Pawn, Color.Black), 5,1);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4,2);
         board.printBoard();
-        Assertions.assertEquals(2, validator.isWinner(board, Color.Black));
+        Assertions.assertEquals(false, validator.isPlayerHasAtLeastOneMove(board, Color.White));
     }
 }
