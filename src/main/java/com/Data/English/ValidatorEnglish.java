@@ -2,7 +2,17 @@ package com.Data.English;
 
 import com.Data.*;
 
+/**
+ * ValidatorEnglish class inherits from abstract class AbstractValidator.
+ * It is used to check the validity of pieces' moves.
+ */
 public class ValidatorEnglish extends AbstractValidator {
+    /**
+     * Checks whether pawn's move is legal or not
+     * @param board
+     * @param move
+     * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
+     */
     @Override
     protected int validPawnMove(Board board, Move move){
         int startX = move.getX1();
@@ -43,6 +53,13 @@ public class ValidatorEnglish extends AbstractValidator {
         System.out.println("Not correct");
         return 0;
     }
+
+    /**
+     * Checks whether queen's move is legal or not
+     * @param board
+     * @param move
+     * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
+     */
     @Override
     protected int validQueenMove(Board board, Move move){
         int startX = move.getX1();
@@ -64,7 +81,7 @@ public class ValidatorEnglish extends AbstractValidator {
             if (board.getField(i, j).getPieceColor() == Color.NoColor) {
                 continue;
             }
-            // Check is there at least one enemy piece between start and end
+            // Check if there is at least one enemy piece between start and end
             if (board.getField(i, j).getPieceColor() != playerMark && !isPassingEnemy) {
                 isPassingEnemy = true;
                 enemyX = i;
@@ -73,11 +90,11 @@ public class ValidatorEnglish extends AbstractValidator {
                     return 0;
                 }
             }
-            // Check is there more than one enemy piece between start and end
+            // Check if there is more than one enemy piece between start and end
             else if (board.getField(i, j).getPieceColor() != playerMark && isPassingEnemy) {
                 return 0;
             }
-            // Check is there at least one allies piece between start and end
+            // Check if there is at least one allies piece between start and end
             else if (board.getField(i, j).getPieceColor() == playerMark) {
                 return 0;
             }
@@ -94,6 +111,16 @@ public class ValidatorEnglish extends AbstractValidator {
         System.out.println("Queen move is valid");
         return 1;
     }
+
+    /**
+     * Checks whether pawn capture is possible or not.
+     * This method is essential because rules in Russian(standart)
+     * checkers and English checkers are a bit different.
+     * @param board
+     * @param startX
+     * @param startY
+     * @return true if capture is possible forward, false in all other cases
+     */
     @Override
     protected boolean isAnyPawnCapturePossible(Board board, int startX, int startY){
         Piece pieceAtStart = board.getField(startX, startY);

@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ *
+ */
 public class ClientNetwork {
     private static Socket socket;
     public static Scanner input;
@@ -18,18 +21,29 @@ public class ClientNetwork {
 
     public static boolean IsYourMove() {return isYourMove;}
 
+    /**
+     * @param ip
+     * @throws IOException
+     */
     public void connectToServer(String ip) throws IOException {
         socket = new Socket(ip, 58901);
         input = new Scanner(socket.getInputStream());
         output = new PrintWriter(socket.getOutputStream(), true);
         System.out.println("Connected");
     }
+
+    /**
+     * @throws IOException
+     */
     public static void disconnectFromServer() throws IOException {
         System.out.println("Disconnected");
         output.println("QUIT");
         socket.close();
     }
 
+    /**
+     * @throws Exception
+     */
     public void getResponse() throws Exception {
         try {
             if(input == null)
@@ -98,10 +112,19 @@ public class ClientNetwork {
             e.printStackTrace();
         }
     }
+
+    /**
+     * @param board
+     */
     private void updateBoard(String board) {
         String[] s = board.split("newline");
         Platform.runLater(() -> ClientApplication.updateSquares(s));
     }
+
+    /**
+     * @param move
+     * @throws Exception
+     */
     public static void sendMove(String move) throws Exception {
         System.out.println(move);
         output.println(move);

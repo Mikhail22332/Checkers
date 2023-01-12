@@ -1,5 +1,8 @@
 package com.Data;
 
+/**
+ * Class Move is used to
+ */
 public class Move {
     private int x1 = 0;
     private int y1 = 0;

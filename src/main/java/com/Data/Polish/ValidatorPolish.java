@@ -1,19 +1,25 @@
 package com.Data.Polish;
 
 import com.Data.*;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
+/**
+ * ValidatorPolish class inherits from abstract class AbstractValidator.
+ * It is used to check the validity of pieces' moves.
+ */
 public class ValidatorPolish extends AbstractValidator {
-
-    // Return 0 - impossible move, 1 - simple move, 2 - move with capture
+    /**
+     * Checks whether piece's move is legal or not.
+     * @param board
+     * @param move
+     * @param lastMove
+     * @param playerMark
+     * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
+     */
     @Override
     public int isValidMove(Board board, Move move, Move lastMove, Color playerMark){
         this.playerMark = playerMark;
-
         int startX = move.getX1();
         int startY = move.getY1();
         int endX = move.getX2();
@@ -42,8 +48,10 @@ public class ValidatorPolish extends AbstractValidator {
             return 0;
         }
         this.isAnyCapture = findAllPossibleCaptures(board);
-        // Added
-        ArrayList <Move> listOfMoves = getLongestPossibleKillChain(board, startX, startY);
+
+        ChainFinder chainFinder = new ChainFinder();
+        ArrayList <Move> listOfMoves = chainFinder.getFirstMovesInLongestChain(board, startX, startY);
+
         if(isAnyCapture) {
             boolean flag = false;
             System.out.println(listOfMoves.size());
@@ -68,6 +76,12 @@ public class ValidatorPolish extends AbstractValidator {
         }
         return 0;
     }
+
+    /**
+     * Method overrides parent's class method according to Polish checker's rules
+     * @param board
+     * @param move
+     */
     @Override
     public void makeMove(Board board, Move move){
         int x1 = move.getX1();
@@ -85,6 +99,13 @@ public class ValidatorPolish extends AbstractValidator {
         System.out.println("Board after move");
         board.printBoard();
     }
+
+    /**
+     * Checks whether pawn's move is legal or not
+     * @param board
+     * @param move
+     * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
+     */
     @Override
     protected int validPawnMove(Board board, Move move){
         int startX = move.getX1();
@@ -125,6 +146,13 @@ public class ValidatorPolish extends AbstractValidator {
         System.out.println("Not correct");
         return 0;
     }
+
+    /**
+     * Checks whether queen's move is legal or not
+     * @param board
+     * @param move
+     * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
+     */
     @Override
     protected int validQueenMove(Board board, Move move){
         int startX = move.getX1();
@@ -174,153 +202,5 @@ public class ValidatorPolish extends AbstractValidator {
         System.out.println("Queen move is valid");
         return 1;
     }
-    @Override
-    public boolean checkForNextMove(Board board, int startX, int startY) {
-        return isAnyPawnCapturePossible(board, startX, startY);
-    }
-    // This method is created for tests for recursion
-    public int isRecursionPossible(Board board, int startX, int startY) {
-        ArrayList <Move> allMoves = getLongestPossibleKillChain(board, startX, startY);
-        return allMoves.size() > 0 ? allMoves.get(0).getStepCounter() : 0;
-    }
-    private Set <Pair<Integer, Integer>> beatedFields = new HashSet<>();
-    // Return all possible first moves for longest beating chain
-    private ArrayList<Move>  getLongestPossibleKillChain(Board board, int startX, int startY) {
-        beatedFields.clear();
-        Piece pieceAtStart = board.getField(startX, startY);
-        board.setField(new Piece(PieceType.Blank, Color.NoColor), startX, startY);
-        ArrayList<Move> possibleMoves = recursion(board, startX, startY, pieceAtStart.getPieceType(), 0);
-        board.setField(pieceAtStart, startX, startY);
-        return possibleMoves;
-    }
-    // Calculate the longest beating chain
-    // Return all possible first moves
-    private ArrayList<Move>  recursion(Board board, int startX, int startY, PieceType type, int step) {
-        ArrayList <Move> movesFromStart = getAllPossibleMovesWithCapture(board, startX, startY, type);
-        ArrayList <Move> movesThatCanBe = new ArrayList<>();
-        System.out.println(startX + " " + startY);
-        if(movesFromStart.size() == 0) {
-            movesThatCanBe.add(new Move(startX, startY, -1, -1, step));
-            return movesThatCanBe;
-        }
-        int maxChain = 0;
-        for(Move currentMove : movesFromStart) {
-            Pair<Integer, Integer> beatedField = getBeatedField(board, currentMove);
-            beatedFields.add(beatedField);
-            ArrayList <Move> newMoveList = recursion(board, currentMove.getX2(), currentMove.getY2(), type, step + 1);
-            beatedFields.remove(beatedField);
-            for(Move moveAfterCurrent : newMoveList) {
-                int currentChain = moveAfterCurrent.getStepCounter();
-                if(currentChain > currentMove.getStepCounter()) {
-                    maxChain = Math.max(maxChain, currentChain);
-                    currentMove.setStepCounter(currentChain);
-                }
-            }
-        }
-        for(Move currentMove : movesFromStart) {
-            if(currentMove.getStepCounter() == maxChain) {
-                 movesThatCanBe.add(currentMove);
-            }
-        }
-        return movesThatCanBe;
-    }
-    private Pair<Integer, Integer> getBeatedField(Board board, Move move) {
-        int startX = move.getX1(), startY = move.getY1();
-        int endX = move.getX2(), endY = move.getY2();
-        int deltaX = endX - startX, deltaY = endY - startY;
-        int directionX = deltaX / Math.abs(deltaX);
-        int directionY = deltaY / Math.abs(deltaY);
-        int i = startX, j = startY;
-        while(i != endX && j != endY) {
-            i += directionX;
-            j += directionY;
-            if(beatedFields.contains(new Pair(i, j)))
-                continue;
-            if(board.getField(i,j).getPieceType() == PieceType.Blank)
-                continue;
-            if(board.getField(i,j).getPieceColor() != playerMark) {
-                return new Pair(i,j);
-            }
-        }
-        return null;
-    }
-    private ArrayList<Move> getAllPossibleMovesWithCapture(Board board, int startX, int startY, PieceType type) {
-        ArrayList<Move> moveList = new ArrayList<Move>();
-        if(type == PieceType.Pawn) {
-            moveList = getAllCapturesForPawn(board, startX, startY);
-        }
-        if(type == PieceType.Queen) {
-            moveList = getAllCapturesForQueen(board, startX, startY);
-        }
-        return moveList;
-    }
-    private ArrayList<Move> getAllCapturesForPawn(Board board, int startX, int startY) {
-        ArrayList<Move> moveList = new ArrayList<>();
-        for(int i = -1; i <= 1; i += 2) {
-            for(int j = -1; j <= 1; j += 2) {
-                int endX = startX + i * 2;
-                int endY = startY + j * 2;
-                boolean outOfBounds = outOfBounds(board, endX, endY);
-                if (outOfBounds || Math.abs(endX-startX) != 2 || Math.abs(endY-startY) != 2) {
-                    continue;
-                }
-                Piece pieceAtEnd = board.getField(endX, endY);
-                if(pieceAtEnd.getPieceType() != PieceType.Blank){
-                    continue;
-                }
-                int midX = (startX + endX) / 2;
-                int midY = (startY + endY) / 2;
-                if(beatedFields.contains(new Pair(midX, midY)))
-                    continue;
-                Piece pieceAtMiddle = board.getField(midX, midY);
-                if(pieceAtMiddle.getPieceType() == PieceType.Blank) {
-                    continue;
-                }
-                if(pieceAtMiddle.getPieceColor() != playerMark) {
-                    moveList.add(new Move(startX, startY, endX, endY));
-                }
-            }
-        }
-        return moveList;
-    }
-    private ArrayList<Move> getAllCapturesForQueen(Board board, int startX, int startY) {
-        ArrayList<Move> moveList = new ArrayList<>();
-        for(int i = -1; i <= 1; i += 2) {
-            for(int j = -1; j <= 1; j += 2) {
-                int currentX = startX;
-                int currentY = startY;
-                while(true) {
-                    currentX += i;
-                    currentY += j;
-                    if(outOfBounds(board, currentX + i, currentY + j))
-                        break;
-                    if(beatedFields.contains(new Pair(currentX, currentY)))
-                        continue;
-                    Piece currentPiece = board.getField(currentX, currentY);
-                    if(currentPiece.getPieceType() == PieceType.Blank) {
-                        continue;
-                    }
-                    if(currentPiece.getPieceColor() != playerMark) {
-                        int endX = currentX;
-                        int endY = currentY;
-                        while(!outOfBounds(board, endX + i, endY + j)) {
-                            endX += i;
-                            endY += j;
-                            Piece endPiece = board.getField(endX, endY);
-                            if (endPiece.getPieceType() == PieceType.Blank) {
-                                moveList.add(new Move(startX, startY, endX, endY));
-                            } else {
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    if(currentPiece.getPieceColor() == playerMark) {
-                        break;
-                    }
-                }
-            }
-        }
-        return moveList;
-    }
+
 }

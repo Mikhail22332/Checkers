@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+
 public class ClientApplication extends Application {
     public static Square[][] squares;
 
@@ -25,11 +26,19 @@ public class ClientApplication extends Application {
     private static int size = 8;
     private static GridPane root;
 
+    /**
+     *
+     * @param newSize
+     */
     public static void setSize(int newSize) {
         size = newSize;
         Platform.runLater(() ->  addSquares(root));
     }
 
+    /**
+     *
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         //ToDo try to find a better way to resize squares and lock min size of grid
@@ -88,6 +97,11 @@ public class ClientApplication extends Application {
         primaryStage.show();
     }
     // Fill gridPane with squares
+
+    /**
+     *
+     * @param root
+     */
     private static void addSquares(GridPane root) {
         squares = new Square[size][size];
 
@@ -138,6 +152,11 @@ public class ClientApplication extends Application {
         updateSquareSizes(root.getWidth(), root.getHeight());
     }
     // Method to update board
+
+    /**
+     *
+     * @param s
+     */
     public static void updateSquares(String[] s) {
         for(int i = 0; i < size; i++){
             String[] fields = s[i].split(",");
@@ -163,6 +182,12 @@ public class ClientApplication extends Application {
         }
         updateSquareSizes(root.getWidth(), root.getHeight());
     }
+
+    /**
+     *
+     * @param width
+     * @param height
+     */
     private static void updateSquareSizes(double width, double height) {
         width -= 100;
         double mi = Math.min(width, height);
@@ -175,9 +200,21 @@ public class ClientApplication extends Application {
             }
         }
     }
+
+    /**
+     *
+     * @param row
+     * @param col
+     * @return
+     */
     public static Square getSquare(int row, int col) {
         return squares[row][col];
     }
+
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args)  {
         launch(args);
     }

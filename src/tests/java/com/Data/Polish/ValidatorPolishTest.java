@@ -15,33 +15,30 @@ class recursionTestsForPawn{
     @Test
     void pawnTest1(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 1);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 2);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 2);
-        Assertions.assertEquals(2, validator.isRecursionPossible(board, 5, 1));
+        Assertions.assertEquals(2, chainFinder.isRecursionPossible(board, 5, 1));
     }
     //test recursion with two options: 1) kill one enemy
     //                                 2) kill two enemies
     @Test
     void pawnTest2(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 1);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 2);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 2);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 6, 4);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 4);
-        Assertions.assertEquals(3, validator.isRecursionPossible(board, 5, 1));
+        Assertions.assertEquals(3, chainFinder.isRecursionPossible(board, 5, 1));
     }
     //test recursion with a long chain
     @Test
     void pawnTest3(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Pawn, Color.White), 4, 5); //
         board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 2); //
         board.setField(new Piece(PieceType.Pawn, Color.Black), 3, 2); //
@@ -51,14 +48,13 @@ class recursionTestsForPawn{
         board.setField(new Piece(PieceType.Pawn, Color.Black), 1, 4); //
         board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 4); //
         board.printBoard();
-        Assertions.assertEquals(7, validator.isRecursionPossible(board, 4, 5));
+        Assertions.assertEquals(7, chainFinder.isRecursionPossible(board, 4, 5));
     }
     //test recursion which is interrupted by your allies pieces
     @Test
     void pawnTest4(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Pawn, Color.White), 9, 0);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 8, 1);
         board.setField(new Piece(PieceType.Pawn, Color.White), 8, 3);
@@ -68,15 +64,14 @@ class recursionTestsForPawn{
         board.setField(new Piece(PieceType.Pawn, Color.Black), 1, 6);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 3);
         board.printBoard();
-        Assertions.assertEquals(2, validator.isRecursionPossible(board, 9, 0));
+        Assertions.assertEquals(2, chainFinder.isRecursionPossible(board, 9, 0));
     }
 
     //test recursion which has super long chain
     @Test
     void pawnTest5(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 4);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 6, 3);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 6, 5);
@@ -103,16 +98,15 @@ class recursionTestsForPawn{
         board.setField(new Piece(PieceType.Pawn, Color.Black), 8, 5);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 8, 7);
         board.printBoard();
-        Assertions.assertEquals(10, validator.isRecursionPossible(board, 5, 4));
+        Assertions.assertEquals(10, chainFinder.isRecursionPossible(board, 5, 4));
     }
     //empty board test
     @Test
     void pawnTest6(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Pawn, Color.White), 5, 1);
-        Assertions.assertEquals(0, validator.isRecursionPossible(board, 5, 1));
+        Assertions.assertEquals(0, chainFinder.isRecursionPossible(board, 5, 1));
     }
 }
 
@@ -122,20 +116,18 @@ class recursionTestsForQueen{
     @Test
     void queenTest1(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Queen, Color.White), 5, 1);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 2);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 2);
         board.printBoard();
-        Assertions.assertEquals(2, validator.isRecursionPossible(board, 5, 1));
+        Assertions.assertEquals(2, chainFinder.isRecursionPossible(board, 5, 1));
     }
     //a bit longer chain
     @Test
     void queenTest2(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Queen, Color.White), 8, 1);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 6, 1);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 6, 3);
@@ -146,14 +138,13 @@ class recursionTestsForQueen{
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 3);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 5);
         board.printBoard();
-        Assertions.assertEquals(8, validator.isRecursionPossible(board, 8, 1));
+        Assertions.assertEquals(8, chainFinder.isRecursionPossible(board, 8, 1));
     }
     //
     @Test
     void queenTest3(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Queen, Color.White), 3, 3);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 5);
         board.setField(new Piece(PieceType.Pawn, Color.White), 6, 6);
@@ -166,13 +157,12 @@ class recursionTestsForQueen{
         board.setField(new Piece(PieceType.Pawn, Color.Black), 4, 8);
         board.setField(new Piece(PieceType.Pawn, Color.White), 2, 8);
         board.printBoard();
-        Assertions.assertEquals(4, validator.isRecursionPossible(board, 3, 3));
+        Assertions.assertEquals(4, chainFinder.isRecursionPossible(board, 3, 3));
     }
     @Test
     void queenTest4(){
         Board board = new Board(10);
-        ValidatorPolish validator = new ValidatorPolish();
-        validator.setPlayerMark(Color.White);
+        ChainFinder chainFinder = new ChainFinder();
         board.setField(new Piece(PieceType.Queen, Color.White), 9, 0);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 7, 0);
         board.setField(new Piece(PieceType.Pawn, Color.White), 9, 2);
@@ -185,7 +175,7 @@ class recursionTestsForQueen{
         board.setField(new Piece(PieceType.Pawn, Color.Black), 2, 7);
         board.setField(new Piece(PieceType.Pawn, Color.Black), 5, 4);
         board.printBoard();
-        Assertions.assertEquals(8, validator.isRecursionPossible(board, 9, 0));
+        Assertions.assertEquals(8, chainFinder.isRecursionPossible(board, 9, 0));
     }
 }
 

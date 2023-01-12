@@ -1,26 +1,40 @@
 package com.Data;
 
+/**
+ * Class Piece is used to create and modify pieces
+ */
 public class Piece {
     private PieceType pieceType;
     private Color pieceColor;
 
-    public Piece(PieceType pieceType, Color pieceColor){
+    /**
+     * Class constructor
+     * @param pieceType
+     * @param pieceColor
+     */
+    public Piece(PieceType pieceType, Color pieceColor) {
         this.pieceType = pieceType;
         this.pieceColor = pieceColor;
     }
-
-    public PieceType getPieceType(){
+    /**
+     * @return piece type
+     */
+    public PieceType getPieceType() {
         return pieceType;
     }
 
-    public Color getPieceColor(){
+    /**
+     * @return piece color
+     */
+    public Color getPieceColor() {
         return pieceColor;
     }
-    public void setPieceType(PieceType type){
+
+    /**
+     * Sets new piece type, used in case of promotion
+     * @param type
+     */
+    public void setPieceType(PieceType type) {
         this.pieceType = type;
     }
-    public void setPieceColor(Color color){
-        this.pieceColor = color;
-    }
-
 }

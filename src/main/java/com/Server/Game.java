@@ -2,7 +2,6 @@ package com.Server;
 
 import com.Data.*;
 import com.Data.English.ValidatorEnglish;
-import com.Data.English.FactoryBoardEnglish;
 import com.Data.Standart.ValidatorStandart;
 import com.Data.Standart.FactoryBoardStandart;
 
@@ -26,7 +25,7 @@ public class Game {
             validator = new ValidatorStandart();
         }
         if(type == GameType.English) {
-            factoryBoard = new FactoryBoardEnglish();
+            factoryBoard = new FactoryBoardStandart();
             board = factoryBoard.сreateBoard(size);
             validator = new ValidatorEnglish();
         }

@@ -7,12 +7,16 @@ class Square extends javafx.scene.control.Control {
     private int col;
     private static Pawn selectedPawn;
 
+    /**
+     *
+     * @param row
+     * @param col
+     */
     public Square(int row, int col) {
         this.row = row;
         this.col = col;
 
         // Set the size of the square
-        // ToDo Rework to resizable
         setMinSize(25, 25);
         setPrefSize(50, 50);
         setMaxSize(100, 100);
@@ -66,13 +70,21 @@ class Square extends javafx.scene.control.Control {
             }
         });
     }
+
+    /**
+     *
+     * @param size
+     */
     public void setSize(double size) {
         setPrefSize(size, size);
         if(getPawn() != null)
             getPawn().setSize(Math.max(size, 25));
     }
+
+    /**
+     *
+     */
     private void makeMove(){
-        //System.out.println("Move is realised");
         ClientApplication.getSquare(selectedPawn.getRow(), selectedPawn.getCol()).setPawn(null);
         selectedPawn.setRow(row);
         selectedPawn.setCol(col);
@@ -82,6 +94,10 @@ class Square extends javafx.scene.control.Control {
         selectedPawn = null;
     }
 
+    /**
+     *
+     * @param pawn
+     */
     public void setPawn(Pawn pawn) {
         this.pawn = pawn;
         getChildren().clear();
@@ -90,6 +106,10 @@ class Square extends javafx.scene.control.Control {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Pawn getPawn() {
         return pawn;
     }

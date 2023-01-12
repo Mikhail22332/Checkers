@@ -2,7 +2,17 @@ package com.Data.Standart;
 
 import com.Data.*;
 
+/**
+ * ValidatorEnglish class inherits from abstract class AbstractValidator.
+ * It is used to check the validity of pieces' moves.
+ */
 public class ValidatorStandart extends AbstractValidator {
+    /**
+     * Checks whether pawn's move is legal or not
+     * @param board
+     * @param move
+     * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
+     */
     @Override
     protected int validPawnMove(Board board, Move move){
         int startX = move.getX1();
@@ -43,6 +53,12 @@ public class ValidatorStandart extends AbstractValidator {
         System.out.println("Not correct");
         return 0;
     }
+    /**
+     *  Checks whether queen's move is legal or not
+     * @param board
+     * @param move
+     * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
+     */
     @Override
     protected int validQueenMove(Board board, Move move){
         int startX = move.getX1();
