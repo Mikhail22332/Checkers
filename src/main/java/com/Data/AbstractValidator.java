@@ -11,19 +11,27 @@ public abstract class AbstractValidator {
     protected boolean isLastMoveCapture = false;
     protected int moveCounter = 0;
     public boolean checkForNextMove(Board board, int startX, int startY) {return isAnyCaptureForThatField(board, startX, startY);}
-    // Return 0 - impossible move, 1 - simple move, 2 - move with capture
+
+    /**
+     *
+     * @param board
+     * @param move
+     * @param lastMove
+     * @param playerMark
+     * @return pair <int, string>. int value 0,1,2 (illegal move, simple move, capture move) correspondingly. String is responsible for warning message
+     */
     public Pair<Integer, String> isValidMove(Board board, Move move, Move lastMove, Color playerMark) {
         this.playerMark = playerMark;
 
-        int startX = move.getX1();
-        int startY = move.getY1();
-        int endX = move.getX2();
-        int endY = move.getY2();
+        int startX = move.getStartX();
+        int startY = move.getStartY();
+        int endX = move.getEndX();
+        int endY = move.getEndY();
 
         isLastMoveCapture = false;
         if(lastMove != null) {
-            int lastX = lastMove.getX2();
-            int lastY = lastMove.getY2();
+            int lastX = lastMove.getEndX();
+            int lastY = lastMove.getEndY();
             isLastMoveCapture = true;
             if(startX != lastX || startY != lastY) {
                 return new Pair<>(0, "You can move only one piece, which made capture");
@@ -49,21 +57,46 @@ public abstract class AbstractValidator {
         }
         return new Pair<>(0, "Error");
     }
-    // Return 0 - impossible move, 1 - simple move, 2 - move with capture
+
+    /**
+     * Method used for unit tests
+     * @param board
+     * @param move
+     * @param lastMove
+     * @param playerMark
+     * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly.
+     */
     public int isValidMoveTest(Board board, Move move, Move lastMove, Color playerMark) {
         return isValidMove(board,move, lastMove, playerMark).getKey();
     }
     // Check is valid move, if that piece was a pawn
+
+    /**
+     *
+     * @param board
+     * @param move
+     * @return pair <int, string>. int value 0,1,2 (illegal move, simple move, capture move) correspondingly. String is responsible for warning message
+     */
     protected Pair<Integer, String> validPawnMove(Board board, Move move) {return new Pair<>(0,"");}
-    // Check is valid move, if that piece was a queen
+
+    /**
+     * @param board
+     * @param move
+     * @return pair <int, string>. int value 0,1,2 (illegal move, simple move, capture move) correspondingly. String is responsible for warning message
+     */
     protected Pair<Integer, String> validQueenMove(Board board, Move move) {return new Pair<>(0,"");}
-    // Release a move
+
+    /**
+     * Method is responsible for piece relocation
+     * @param board
+     * @param move
+     */
     public void makeMove(Board board, Move move) {
         moveCounter++;
-        int x1 = move.getX1();
-        int y1 = move.getY1();
-        int x2 = move.getX2();
-        int y2 = move.getY2();
+        int x1 = move.getStartX();
+        int y1 = move.getStartY();
+        int x2 = move.getEndX();
+        int y2 = move.getEndY();
         Piece current = board.getField(x1,y1);
         if(checkPromotion(current, board.getSize(), x2)){
             current.setPieceType(PieceType.Queen);
@@ -73,18 +106,33 @@ public abstract class AbstractValidator {
         System.out.println("Board after move");
         board.printBoard();
     }
-    // Used at makeMove
-    // Check if the piece, which made a move, need a promotion
+
+    /**
+     * checks possible pawn promotion
+     * @param current
+     * @param size
+     * @param x2
+     * @return true if promotion possible, false if not
+     */
     protected boolean checkPromotion(Piece current, int size, int x2) {
         if(current.getPieceType() != PieceType.Pawn) {return false;}
         if(x2 == 0 && current.getPieceColor() == Color.White){return true;}
         return x2 == size - 1 && current.getPieceColor() == Color.Black;
     }
-    // Check is position (x,y) is out of bounds of board
+
+    /**
+     * @param board
+     * @param x
+     * @param y
+     * @return true if out of bounds, false otherwise
+     */
     protected boolean outOfBounds(Board board, int x, int y){
         return !(x >= 0 && x < board.getSize() && y >= 0 && y < board.getSize());
     }
-    // Return true if there is any possible capture
+    /**
+     * @param board
+     * @return true if there is any possible capture
+     */
     protected boolean findAllPossibleCaptures(Board board) {
         for(int i = 0; i < board.getSize(); i++) {
             for(int j = 0; j < board.getSize(); j++){
@@ -95,7 +143,13 @@ public abstract class AbstractValidator {
         }
         return false;
     }
-    // Return true if there is any possible capture from some field
+    /**
+     *
+     * @param board
+     * @param startX
+     * @param startY
+     * @return true if there is any possible capture from some field
+     */
     public boolean isAnyCaptureForThatField(Board board, int startX, int startY) {
         Piece movingPiece = board.getField(startX, startY);
         if(movingPiece.getPieceColor() != playerMark) {
@@ -113,7 +167,12 @@ public abstract class AbstractValidator {
         }
         return false;
     }
-    // Return true if there is any possible capture from some field with pawn
+    /**
+     * @param board
+     * @param startX
+     * @param startY
+     * @return  true if there is any possible captures for a pawn
+     */
     protected boolean isAnyPawnCapturePossible(Board board, int startX, int startY){
         for(int i = -1; i <= 1; i += 2) {
             for(int j = -1; j <= 1; j += 2) {
@@ -140,7 +199,15 @@ public abstract class AbstractValidator {
         }
         return false;
     }
-    // Return true if there is any possible capture from some field with queen
+
+    /**
+     *
+     * @param board
+     * @param startX
+     * @param startY
+     * @return true if there is any possible capture for a queen at a sertan position
+     */
+    // Return
     protected boolean isAnyQueenCapturePossible(Board board, int startX, int startY) {
         for(int i = -1; i <= 1; i += 2) {
             for(int j = -1; j <= 1; j += 2) {
@@ -174,6 +241,12 @@ public abstract class AbstractValidator {
         }
         return false;
     }
+
+    /**
+     * @param board
+     * @param playerColor
+     * @return true if player has moves left
+     */
     public boolean isPlayerHasAtLeastOneMove(Board board, Color playerColor) {
         return isPlayerHasAnyMoves(board, playerColor);
     }
@@ -181,7 +254,7 @@ public abstract class AbstractValidator {
      * Check Is the player a winner
      * @param board
      * @param playerColor
-     * @return true if player is a winner, else false
+     * @return true if player is a winner, otherwise false
      */
     public boolean isWinner(Board board, Color playerColor){
         return !isAnyOpponentPiecesOnBoard(board, playerColor);

@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class Game {
     Board board;
-    AbstractFactory factoryBoard;
+    AbstractFactoryBoard factoryBoard;
     AbstractValidator validator;
     Player currentPlayer;
     GameType currentType;
@@ -58,7 +58,7 @@ public class Game {
                 validator.makeMove(board, move);
                 lastMyMove = move;
                 // Check is there any more move with capture
-                if(validator.checkForNextMove(board, lastMyMove.getX2(), lastMyMove.getY2())) {
+                if(validator.checkForNextMove(board, lastMyMove.getEndX(), lastMyMove.getEndY())) {
                     output.println("VALID_MOVE YOUR_TURN " + board.boardToString());
                     return false;
                 }

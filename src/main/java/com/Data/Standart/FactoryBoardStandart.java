@@ -2,7 +2,7 @@ package com.Data.Standart;
 
 import com.Data.*;
 
-public class FactoryBoardStandart extends AbstractFactory {
+public class FactoryBoardStandart extends AbstractFactoryBoard {
     /**
      * Constructor which invokes abstract class constructor
      */

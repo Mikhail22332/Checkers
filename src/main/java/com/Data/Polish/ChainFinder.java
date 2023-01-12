@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class ChainFinder is responsible for finding the longest possible beating chain or chains
+ */
 public class ChainFinder {
     private Set<Pair<Integer, Integer>> beatedFields = new HashSet<>();
     /**
@@ -60,7 +63,7 @@ public class ChainFinder {
 
             Pair<Integer, Integer> beatedField = getBeatField(board, currentMove, type.getPieceColor());
             beatedFields.add(beatedField);
-            ArrayList <Move> newMoveList = recursion(board, currentMove.getX2(), currentMove.getY2(), type, step + 1);
+            ArrayList <Move> newMoveList = recursion(board, currentMove.getEndX(), currentMove.getEndY(), type, step + 1);
             beatedFields.remove(beatedField);
             for(Move moveAfterCurrent : newMoveList) {
                 int currentChain = moveAfterCurrent.getStepCounter();
@@ -86,8 +89,8 @@ public class ChainFinder {
      * @return a pair of int values (x, y) coordinates of beat field
      */
     private Pair<Integer, Integer> getBeatField(Board board, Move move, Color playerMark) {
-        int startX = move.getX1(), startY = move.getY1();
-        int endX = move.getX2(), endY = move.getY2();
+        int startX = move.getStartX(), startY = move.getStartY();
+        int endX = move.getEndX(), endY = move.getEndY();
         int deltaX = endX - startX, deltaY = endY - startY;
         int directionX = deltaX / Math.abs(deltaX);
         int directionY = deltaY / Math.abs(deltaY);

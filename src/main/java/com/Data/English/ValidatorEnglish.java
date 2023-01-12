@@ -12,14 +12,14 @@ public class ValidatorEnglish extends AbstractValidator {
      * Checks whether pawn's move is legal or not
      * @param board
      * @param move
-     * @return int value 0,1,2 (illegal move, simple move, capture move) correspondingly
+     * @return pair <int, string>. int value 0,1,2 (illegal move, simple move, capture move) correspondingly. String is responsible for warning message
      */
     @Override
     protected Pair<Integer, String> validPawnMove(Board board, Move move){
-        int startX = move.getX1();
-        int startY = move.getY1();
-        int endX = move.getX2();
-        int endY = move.getY2();
+        int startX = move.getStartX();
+        int startY = move.getStartY();
+        int endX = move.getEndX();
+        int endY = move.getEndY();
         int deltaX = endX - startX;
         int deltaY = endY - startY;
         int midX = startX + deltaX/2;
@@ -58,10 +58,10 @@ public class ValidatorEnglish extends AbstractValidator {
      */
     @Override
     protected Pair<Integer, String> validQueenMove(Board board, Move move){
-        int startX = move.getX1();
-        int startY = move.getY1();
-        int endX = move.getX2();
-        int endY = move.getY2();
+        int startX = move.getStartX();
+        int startY = move.getStartY();
+        int endX = move.getEndX();
+        int endY = move.getEndY();
         int deltaX = endX - startX;
         int deltaY = endY - startY;
         int directionX = deltaX / Math.abs(deltaX);

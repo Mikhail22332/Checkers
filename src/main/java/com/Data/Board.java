@@ -2,9 +2,17 @@ package com.Data;
 
 import java.util.ArrayList;
 
+/**
+ * Class used to store pieces in the form of matrix
+ */
 public class Board {
     private ArrayList<ArrayList<Piece>> field = new ArrayList<>();
     private int size;
+
+    /**
+     * fulfills matrix of pieces with no color or type.
+     * @param size
+     */
     public Board(int size){
         this.size = size;
         for(int i = 0; i < size; i++){
@@ -18,12 +26,28 @@ public class Board {
     public int getSize() {
         return size;
     }
+    /**
+     * @param i
+     * @param j
+     * @return get piece on board
+     */
     public Piece getField(int i, int j){
         return field.get(i).get(j);
     }
+
+    /**
+     * sets new piece on board
+     * @param piece
+     * @param i
+     * @param j
+     */
     public void setField(Piece piece, int i, int j){
         field.get(i).set(j, piece);
     }
+
+    /**
+     * Method needed to print info about pieces in the form of String
+     */
     public void printBoard(){
         String s;
         System.out.println("board:");
@@ -53,6 +77,10 @@ public class Board {
         }
         System.out.println("finish");
     }
+
+    /**
+     * @return converts info about pieces into the form of a String
+     */
     public String boardToString(){
         String s = "";
         for(int i = 0; i < this.getSize(); i++){
@@ -81,6 +109,4 @@ public class Board {
         }
         return s;
     }
-    // To Test Client-Server Console version
-
 }

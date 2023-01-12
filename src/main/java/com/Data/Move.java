@@ -1,70 +1,116 @@
 package com.Data;
 
 /**
- * Class Move is used to
+ * Class Move is used to create and modify and reposition
  */
 public class Move {
-    private int x1 = 0;
-    private int y1 = 0;
-    private int x2 = 0;
-    private int y2 = 0;
+    private int startX = 0;
+    private int startY = 0;
+    private int endX = 0;
+    private int endY = 0;
     private int stepCounter = 0;
     public Move(){}
-    public Move(int x1, int y1, int x2, int y2){
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
+
+    /**
+     * Constructor
+     * @param startX
+     * @param startY
+     * @param endX
+     * @param endY
+     */
+    public Move(int startX, int startY, int endX, int endY){
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
     }
-    public Move(int x1, int y1, int x2, int y2, int step) {
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
+
+    /**
+     * Constructor
+     * @param startX
+     * @param startY
+     * @param endX
+     * @param endY
+     * @param step
+     */
+    public Move(int startX, int startY, int endX, int endY, int step) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
         this.stepCounter = step;
     }
 
+    /**
+     * Sets value to step counter
+     * @param stepCounter
+     */
     public void setStepCounter(int stepCounter) { this.stepCounter = stepCounter; }
-
+    /**
+     *
+     * @return number of steps made in recursion
+     */
     public int getStepCounter() { return stepCounter; }
-
+    /**
+     * sets new array of start and end coordinates
+     * @param s
+     */
     public void SetMove(String s[]){
-        this.x1 = Integer.parseInt(s[0]);
-        this.y1 = Integer.parseInt(s[1]);
-        this.x2 = Integer.parseInt(s[2]);
-        this.y2 = Integer.parseInt(s[3]);
+        this.startX = Integer.parseInt(s[0]);
+        this.startY = Integer.parseInt(s[1]);
+        this.endX = Integer.parseInt(s[2]);
+        this.endY = Integer.parseInt(s[3]);
     }
+    /**
+     *
+     * @param s
+     * @return
+     */
     public static Move StringToMove(String s){
         String[] a = s.split(",");
         Move move = new Move();
         move.SetMove(a);
         return move;
     }
-    public int getX1(){return x1;}
-    public int getY1(){return y1;}
-    public int getX2(){return x2;}
-    public int getY2(){return y2;}
+    /**
+     * @return start x coordinate
+     */
+    public int getStartX(){return startX;}
+    /**
+     * @return start y coordinate
+     */
+    public int getStartY(){return startY;}
+    /**
+     * @return end x coordinate
+     */
+    public int getEndX(){return endX;}
+    /**
+     * @return end y coordinate
+     */
+    public int getEndY(){return endY;}
+    /**
+     * Method converts piece coordinates into string
+     * and sends that information to server
+     * @param move
+     * @return string
+     */
 
-    public void setX2(int x2) {
-        this.x2 = x2;
-    }
-
-    public void setY2(int y2) {
-        this.y2 = y2;
-    }
-
-    public static String MoveToString(Move move){
+    /*public static String MoveToString(Move move){
         String s = "";
-        s += move.getX1() + ",";
-        s += move.getY1() + ",";
-        s += move.getX2() + ",";
-        s += move.getY2();
+        s += move.getStartX() + ",";
+        s += move.getStartY() + ",";
+        s += move.getEndX() + ",";
+        s += move.getEndY();
         return s;
-    }
+    }*/
+    /**
+     * @param move
+     * @return true if start coordinates equal to end coordinates, false otherwise
+     */
     public boolean isEqual(Move move) {
-        return this.getX1() == move.getX1() &&
-                this.getY1() == move.getY1() &&
-                this.getX2() == move.getX2() &&
-                this.getY2() == move.getY2();
+        return this.getStartX() == move.getStartX() &&
+                this.getStartY() == move.getStartY() &&
+                this.getEndX() == move.getEndX() &&
+                this.getEndY() == move.getEndY();
     }
 }
